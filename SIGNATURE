@@ -1,0 +1,87 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 3a30da291e25a6947bb3a30f4c1e8ee7c2ae46e8 Changes
+SHA1 251f0535303fa9c84ce3b8468ca07d83d6d834d1 MANIFEST
+SHA1 ae5fdcad84fe8b8d11c6e930dfc533f4234022b5 META.yml
+SHA1 8422a8a278f7596551a4ce1a4afd9152c1a54a83 Makefile.PL
+SHA1 f0577f8f88a6703e9bca2d10196cfd293f3d6f2f inc/Module/Install.pm
+SHA1 5d574849849860b8cf06035cc6f1a306c66cb326 inc/Module/Install/Base.pm
+SHA1 c30f50bc2a1542dff17f84a54d9316f3c3c6299e inc/Module/Install/Can.pm
+SHA1 9b618efcd783f6ed4bab84fa22b31886fcc38d57 inc/Module/Install/Fetch.pm
+SHA1 cd14c8de2a67b0f14df9bc20c27f3edabd359d1b inc/Module/Install/Makefile.pm
+SHA1 a2162aec678d21988fce47ab805cf01773196292 inc/Module/Install/Metadata.pm
+SHA1 4ae5d56e11e640bd9520634dde6d563926f6d98a inc/Module/Install/Win32.pm
+SHA1 587cc94b52b640fe2d4972253b6369aa951e2210 inc/Module/Install/WriteAll.pm
+SHA1 a38fe008a54145850fb01c0d3f4ea5c054a001dd lib/NetHack/Item.pm
+SHA1 a062bbcb9238c1b62eed06764c88492b5425335d lib/NetHack/Item/Amulet.pm
+SHA1 9ee2ae975a8025a0fbec2c1eaac7b01eea67a821 lib/NetHack/Item/Armor.pm
+SHA1 5f555f097a91c72fff73ff289685a20a778086c5 lib/NetHack/Item/Food.pm
+SHA1 e97fc8ba2d0e242271fc64b620347048e4e882c6 lib/NetHack/Item/Gem.pm
+SHA1 3ce1ad46fe3886a5ab6a7dd2f511501b7f1aea63 lib/NetHack/Item/Other.pm
+SHA1 d2c23c1d1c5d5965f0a70230b775770cf915eb60 lib/NetHack/Item/Potion.pm
+SHA1 697a4f15bc82e1d6ddee95d6e4f2959f0d80e926 lib/NetHack/Item/Ring.pm
+SHA1 7882b258520e07add29cef09b83e8138ca7061bb lib/NetHack/Item/Role/Chargeable.pm
+SHA1 706344bff5d58eefb35a2279ebd9c1a4cde9e915 lib/NetHack/Item/Role/Damageable.pm
+SHA1 d558a4dc6fc490c527d015efa39699517b565caf lib/NetHack/Item/Role/EnchantBUC.pm
+SHA1 d4145a6c3a1afc88f97587f0d20eaff8c0fbee9c lib/NetHack/Item/Role/Enchantable.pm
+SHA1 bb5a4f37f22c5703cbdafbd79d153beacc02122b lib/NetHack/Item/Role/Lightable.pm
+SHA1 5c8d09b9683968328231d5dad698898d5a6d001c lib/NetHack/Item/Role/Wearable.pm
+SHA1 b74977d047b4a9136695a4f8161484cecaaba7c8 lib/NetHack/Item/Scroll.pm
+SHA1 af104ecf2c9d22b9f11c2c2a069082b7a1a1fecc lib/NetHack/Item/Spellbook.pm
+SHA1 84cbe723285aeeea66c1120d8bb1516a04b94cc3 lib/NetHack/Item/Spoiler.pm
+SHA1 43453a42fb774e37fa952ec5b4b762e1c15ac910 lib/NetHack/Item/Spoiler/Amulet.pm
+SHA1 ba011ca8c4ed56b758d61f83f2b9ec3c305609cb lib/NetHack/Item/Spoiler/Armor.pm
+SHA1 a4c4e8e149560d4e0d8593273aad631f72f4649d lib/NetHack/Item/Spoiler/Food.pm
+SHA1 01925b1434b1eb2726995de2eb9f0ddf501a7335 lib/NetHack/Item/Spoiler/Gem.pm
+SHA1 8f97bcf9d038565dfcd9d5cc09cae7e4f0b51a00 lib/NetHack/Item/Spoiler/Other.pm
+SHA1 058fc219d6454c2289958dd71dbc9e1c98effeda lib/NetHack/Item/Spoiler/Potion.pm
+SHA1 0453166702ff85fd2365227026735240b613eef5 lib/NetHack/Item/Spoiler/Ring.pm
+SHA1 1af63f7b002a42cd0439ffc29614eed72a332451 lib/NetHack/Item/Spoiler/Scroll.pm
+SHA1 5dfb6111fef5608acd550ab39094eae9866748ea lib/NetHack/Item/Spoiler/Spellbook.pm
+SHA1 2a65084c71b5184c6712f4fc497e6655a59bb11b lib/NetHack/Item/Spoiler/Tool.pm
+SHA1 0239670f81347ea10005768a36f6aea07c6ed389 lib/NetHack/Item/Spoiler/Wand.pm
+SHA1 bb1d6856256cd61d5e4a143cdfa665ae98ab4180 lib/NetHack/Item/Spoiler/Weapon.pm
+SHA1 e1a28407b95c6c464cdda847c5a01093f023d50a lib/NetHack/Item/Tool.pm
+SHA1 7230aec35bd8c87fa5ad306c6613f8c143a2651b lib/NetHack/Item/Wand.pm
+SHA1 c17af72eea1612a76a046eeef699399111784593 lib/NetHack/Item/Weapon.pm
+SHA1 bf406d8c66cc4cb0e8b1b467ed4318bbe225abc4 t/000-load.t
+SHA1 308e793ecfc6ca948341ee98915b674d8551cb72 t/001-buc.t
+SHA1 6785e2a975e335492dce9e69e48838b775536238 t/050-extract.t
+SHA1 ab5d9ab238e308e85b1a409ae6af5dd86ffaa5fb t/100-basic.t
+SHA1 217c9e6ee290917c3190e92955bc930cfd81d219 t/101-type.t
+SHA1 3f4c8ac4a1e0b950cb35166b1ed0a14bc1a71101 t/102-types-unided.t
+SHA1 787558dc68669c63d86d6059283eb2de019e35c3 t/103-slot.t
+SHA1 609a2f9345863f0e4008a7222312edcd204392fa t/104-quantity.t
+SHA1 b71e5979a25a098da5dc17bff1c58b5c5662d940 t/105-buc.t
+SHA1 a5536556dc1b2e62e1ced9e0a75b9f4b419309ce t/106-attributes.t
+SHA1 1a3428675169cc9022829fd0ae26d2efbd8c640c t/107-enchantment.t
+SHA1 dfaa9c191da28b93a9c50645a636f6de39702276 t/108-name-ided.t
+SHA1 16bdc5a588f6d7362c96572629ead8ace5b5ef35 t/109-name-unided.t
+SHA1 c55bea35699770f33de0f63c3093b70c05d968f7 t/110-pound-name.t
+SHA1 abddb8298da60157c821dabeec9ac9d07cc03ea7 t/111-paren-attributes.t
+SHA1 172205650ccdd2e0a04501b1127547a8a88cedb0 t/112-japanese-names.t
+SHA1 b46a6d7bd71c402bf777266eca50f4c14bfb3982 t/113-unpaid.t
+SHA1 e456c77b3cce693339f663c588e3285963a24aff t/200-spoilers.t
+SHA1 de58e2cf65c71374efd00fff15e21abc0b1b50f2 t/lib/Test/NetHack/Item.pm
+SHA1 bc5f9b4686a3db1c994b54cdb62a7f73f2b2a48c t/lib/Test/NetHack/Items.pm
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (Darwin)
+
+iD8DBQFIbg+ksxfQtHhyRPoRAjHsAJ9zILsGromWCkaOZgkM8B1SUU87rACfYvkF
+/iw7zTio2J6AcVt0zqLqSYw=
+=EMcD
+-----END PGP SIGNATURE-----
