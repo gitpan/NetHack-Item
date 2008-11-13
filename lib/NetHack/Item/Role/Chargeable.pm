@@ -31,7 +31,12 @@ has charges_spent_this_recharge => (
     isa       => 'Int',
     default   => 0,
     provides  => {
-        add => 'add_charges_spent_this_recharge',
+        add   => 'add_charges_spent_this_recharge',
+    },
+    curries => {
+        set => {
+            reset_charges_spent_this_recharge => [ 0 ],
+        },
     },
 );
 
@@ -52,7 +57,7 @@ sub spend_charge {
     $self->add_charges_spent_this_recharge($count);
 
     return unless $self->charges_known;
-    $self->subtract_charges($$count);
+    $self->subtract_charges($count);
     if ($self->charges < 0) {
         $self->charges(0);
     }
@@ -63,6 +68,7 @@ sub recharge {
 
     $self->set_charges_unknown;
     $self->inc_times_recharged;
+    $self->reset_charges_spent_this_recharge;
     $self->inc_recharges if $self->has_recharges;
 }
 

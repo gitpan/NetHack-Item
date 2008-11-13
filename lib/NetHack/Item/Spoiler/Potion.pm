@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';
 
-use Memoize;
-memoize 'list';
+use constant type => 'potion';
 
 my @potions = map { "$_ potion" } (
     qw/ruby pink orange yellow emerald cyan magenta purple-red puce milky
@@ -13,7 +12,7 @@ my @potions = map { "$_ potion" } (
     murky/, 'dark green', 'sky blue', 'brilliant blue',
 );
 
-sub list {
+sub _list {
     my $potions = {
         'potion of booze' => {
             price => 50,
@@ -96,18 +95,12 @@ sub list {
         },
     };
 
-    # tag each potion with its name, weight, appearances, etc
-    for my $name (keys %$potions) {
-        my $stats = $potions->{$name};
-        $stats->{name}        = $name;
-        $stats->{weight}      = 20;
-        $stats->{type}        = 'potion';
-        ($stats->{plural}     = $name) =~ s/\bpotion\b/potions/;
-        $stats->{appearances} = \@potions
-            unless $stats->{appearance} || $stats->{appearances};
-    }
-
-    return $potions;
+    return $potions, (weight => 20, appearances => \@potions,
+                      plural => sub {
+                        my $name = shift;
+                        $name =~ s/\bpotion\b/potions/;
+                        return $name;
+                      })
 }
 
 sub extra_plurals {

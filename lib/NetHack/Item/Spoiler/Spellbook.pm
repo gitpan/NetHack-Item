@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';
 
-use Memoize;
-memoize 'list';
+use constant type => 'spellbook';
 
 my @spellbooks = map { "$_ spellbook" } (
     qw/parchment vellum ragged mottled stained cloth leather white pink red
@@ -15,7 +14,7 @@ my @spellbooks = map { "$_ spellbook" } (
     blue', 'light brown', 'dark brown',
 );
 
-sub list {
+sub _list {
     my $spellbooks = {
         'Book of the Dead' => {
             artifact   => 1,
@@ -24,6 +23,7 @@ sub list {
             level      => 7,
             read       => 0,
             marker     => 0,
+            fullname   => 'The Book of the Dead',
             appearance => 'papyrus spellbook',
         },
 
@@ -296,17 +296,7 @@ sub list {
         },
     };
 
-    # tag each spellbook with its name, weight, appearances, etc
-    for my $name (keys %$spellbooks) {
-        my $stats = $spellbooks->{$name};
-        $stats->{name}        = $name;
-        $stats->{type}        = 'spellbook';
-        $stats->{weight}    ||= 50;
-        $stats->{appearances} = \@spellbooks
-            unless $stats->{appearance} || $stats->{appearances};
-    }
-
-    return $spellbooks;
+    return $spellbooks, (weight => 50, appearances => \@spellbooks);
 }
 
 1;

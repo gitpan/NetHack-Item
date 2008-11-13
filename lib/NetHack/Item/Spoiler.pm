@@ -6,19 +6,78 @@ use warnings;
 use Module::Pluggable search_path => __PACKAGE__, require => 1;
 
 use Memoize;
+memoize 'list';
 memoize 'name_to_type_list';
 memoize 'possibilities_to_appearances';
 memoize 'plurals';
 memoize 'plural_of_list';
 memoize 'singular_of_list';
 
+my %artifact;
+
+# actual item lookups {{{
+sub spoiler_for {
+    my $self = shift;
+    my $name = shift;
+
+    my $subspoiler = $self->name_to_class($name)
+        or return;
+
+    return $subspoiler->list->{$name};
+}
+
+sub list {
+    my $self = shift;
+    my ($items, %defaults) = $self->_list;
+    my $type = lc $self;
+    $type =~ s/.*:://;
+
+    my @defer_appearance;
+
+    # tag each item with its name, weight, appearances, etc
+    for my $name (keys %$items) {
+        my $stats = $items->{$name};
+        $stats->{name}        = $name;
+        $stats->{type}        = $type;
+        $stats->{weight}    ||= $defaults{weight};
+        $stats->{price}     ||= $defaults{price};
+        $stats->{plural}      = $defaults{plural}($name)
+            if exists $defaults{plural};
+
+        unless (exists $stats->{appearance} || exists $stats->{appearances}) {
+            # the base item may not be processed yet, so we need to defer
+            # checking this artifact's appearance for now..
+            push @defer_appearance, $stats
+                if $stats->{artifact} && $stats->{base};
+
+            my $appearance = $defaults{appearance}
+                          || $defaults{appearances}
+                          || $name;
+
+            if (ref $appearance eq 'ARRAY') {
+                $stats->{appearances} = $appearance;
+            }
+            else {
+                $stats->{appearance} = $appearance;
+            }
+        }
+    }
+
+    for my $stats (@defer_appearance) {
+        $stats->{appearance} = $items->{ $stats->{base} }->{appearance};
+        $stats->{appearances} = $items->{ $stats->{base} }->{appearances};
+    }
+
+    return $items;
+}
+# }}}
 # names, appearances, and types {{{
 sub name_to_type_list {
     my $self = shift;
     my %all_types;
 
     for my $class ($self->plugins) {
-        my ($type) = map { lc } $class =~ /.*::(.*)$/;
+        my $type = $class->type;
 
         my $list = $class->list;
         for (values %$list) {
@@ -27,6 +86,9 @@ sub name_to_type_list {
                 for grep { defined }
                     $_->{appearance},
                     @{ $_->{appearances} || [] };
+
+            $artifact{lc $_->{name}} = $_
+                if $_->{artifact};
         }
 
         if ($class->can('extra_names')) {
@@ -43,12 +105,32 @@ sub name_to_type {
     my $self = shift;
     my $name = shift;
 
-    my $type = $self->name_to_type_list->{$name};
+    my $list = $self->name_to_type_list;
+
+    my $type = $list->{ $name || '' }
+            || $list->{ $self->singularize($name) || '' };
 
     # handle e.g. "potion called fruit juice"
-    $type ||= $name if (__PACKAGE__."::\u\L$name")->can('list');
+    $type ||= $name if $self->type_to_class($name)->can('list');
 
     return $type;
+}
+
+sub type_to_class {
+    my $self = shift;
+    my $type = shift;
+
+    return __PACKAGE__ . "::\u\L$type";
+}
+
+sub name_to_class {
+    my $self = shift;
+    my $name = shift;
+
+    my $type = $self->name_to_type($name);
+
+    return undef if !$type;
+    return $self->type_to_class($type);
 }
 # }}}
 # possibilities and appearances {{{
@@ -59,10 +141,13 @@ sub possibilities_to_appearances {
     my %possibilities;
 
     for my $stats (values %$list) {
-            push @{ $possibilities{$_} }, $stats->{name}
-                for grep { defined }
-                         $stats->{appearance},
-                         @{ $stats->{appearances} };
+        next if $stats->{artifact} # artifacts are always known
+             && $stats->{base};    # ..but we still want the special artifacts
+
+        push @{ $possibilities{$_} }, $stats->{name}
+            for grep { defined }
+                     $stats->{appearance},
+                     @{ $stats->{appearances} };
     }
 
     return \%possibilities;
@@ -73,8 +158,11 @@ sub possibilities_for_appearance {
     my $appearance = shift;
     my $possibilities;
 
-    $possibilities = [$appearance] if $self->list->{$appearance};
-    $possibilities ||= $self->possibilities_to_appearances->{$appearance};
+    my $subspoiler = $self->name_to_class($appearance)
+        or return;
+
+    $possibilities = [$appearance] if $subspoiler->list->{$appearance};
+    $possibilities ||= $subspoiler->possibilities_to_appearances->{$appearance};
     $possibilities ||= [];
 
     return $possibilities;
@@ -147,6 +235,16 @@ sub japanese_to_english {
         "potion of sake"  => "potion of booze",
         "potions of sake" => "potions of booze",
     };
+}
+# }}}
+# artifacts {{{
+sub artifact_spoiler {
+    my $self = shift;
+    my $name = lc(shift);
+
+    $name =~ s/^the\s+//;
+
+    return $artifact{$name};
 }
 # }}}
 

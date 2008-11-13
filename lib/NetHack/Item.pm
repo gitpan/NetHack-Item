@@ -3,14 +3,29 @@ package NetHack::Item;
 use Moose;
 use MooseX::AttributeHelpers;
 
-use NetHack::Item::Spoiler;
-
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has raw => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
+);
+
+has identity => (
+    is        => 'rw',
+    isa       => 'Str',
+    predicate => 'has_identity',
+);
+
+has appearance => (
+    is        => 'rw',
+    isa       => 'Str',
+    predicate => 'has_appearance',
+);
+
+has artifact => (
+    is        => 'rw',
+    isa       => 'Str',
 );
 
 has slot => (
@@ -31,16 +46,20 @@ has cost => (
     default => 0,
 );
 
-has [qw/generic_name specific_name/] => (
-    is      => 'rw',
-    isa     => 'Str',
-    default => '',
+has specific_name => (
+    is        => 'rw',
+    isa       => 'Str',
+    predicate => 'has_specific_name',
+    trigger   => sub {
+        # recalculate whether this item is an artifact or not (e.g. Sting)
+        shift->is_artifact;
+    },
 );
 
-has _best_match => (
-    is            => 'rw',
-    isa           => 'Str',
-    documentation => "This is the item's identity if available, otherwise its appearance. This attribute is temporary, until we get possibility tracking.",
+has generic_name => (
+    is        => 'rw',
+    isa       => 'Str',
+    predicate => 'has_generic_name',
 );
 
 for my $type (qw/wield quiver grease offhand/) {
@@ -101,10 +120,8 @@ for my $buc (qw/is_blessed is_uncursed is_cursed/) {
     );
 }
 
-for ([holy => 'blessed'], [unholy => 'cursed']) {
-    my ($holiness, $buc) = @$_;
-    __PACKAGE__->meta->alias_method("is_$holiness" => __PACKAGE__->meta->find_method_by_name("is_$buc"));
-}
+sub is_holy   { shift->is_blessed(@_) }
+sub is_unholy { shift->is_cursed(@_)  }
 
 sub buc {
     my $self = shift;
@@ -123,24 +140,17 @@ sub buc {
     return undef;
 }
 
-sub BUILDARGS {
-    my $class = shift;
-
-    if (@_ == 1) {
-        return $_[0] if ref($_[0]) eq 'HASH';
-        return { raw => $_[0] } if !ref($_[0]);
-    }
-    else {
-        return { @_ };
-    }
-
-    confess "I don't know how to handle $class->new(@_)";
-}
-
 around BUILDARGS => sub {
     my $orig = shift;
     my $class = shift;
-    my $args = $class->$orig(@_);
+
+    my $args;
+    if (@_ == 1 && !ref($_[0])) {
+        $args = { raw => $_[0] };
+    }
+    else {
+        $args = $orig->($class, @_);
+    }
 
     if ($args->{buc}) {
         $args->{"is_$args->{buc}"} = 1;
@@ -163,13 +173,38 @@ sub BUILD {
     $self->parse_raw;
 }
 
-sub _rebless_into {
+sub choose_item_class {
+    my $self    = shift;
+    my $type    = shift;
+    my $subtype = shift;
+
+    my $class = "NetHack::Item::" . ucfirst lc $type;
+    $class .= '::' . ucfirst lc $subtype
+        if $subtype;
+
+    return $class;
+}
+
+sub spoiler_class {
     my $self = shift;
     my $type = shift;
+    $type ||= $self->type if $self->can('type');
+
+    my $class = $type
+              ? "NetHack::Item::Spoiler::" . ucfirst lc $type
+              : "NetHack::Item::Spoiler";
+    Class::MOP::load_class($class);
+    return $class;
+}
+
+sub _rebless_into {
+    my $self    = shift;
+    my $type    = shift;
+    my $subtype = shift;
 
     return if !blessed($self);
 
-    my $class = "NetHack::Item::" . ucfirst lc $type;
+    my $class = $self->choose_item_class($type, $subtype);
     my $meta = Class::MOP::load_class($class);
     $meta->rebless_instance($self);
 }
@@ -185,7 +220,8 @@ sub extract_stats {
                     recharges charges candles lit_candelabrum lit laid chained
                     quivered offhand offhand_wielded wielded worn cost/;
 
-    # this regex was written by Jesse Luehrs
+    # the \b in front of "item name" forbids "Amulet of Yendor" being parsed as
+    # "A mulet of Yendor"
     @stats{@fields} = $raw =~ m{
         ^                                                      # anchor
         (?:([\w\#\$])\s[+-]\s)?                           \s*  # slot
@@ -201,7 +237,7 @@ sub extract_stats {
         (diluted)?                                        \s*  # potions
         ([+-]\d+)?                                        \s*  # enchantment
         (?:(?:pair|set)\ of)?                             \s*  # gloves boots
-        (.*?)                                             \s*  # item name
+        \b(.*?)                                           \s*  # item name
         (?:called\ (.*?))?                                \s*  # generic name
         (?:named\ (.*?))?                                 \s*  # specific name
         (?:\((\d+):(-?\d+)\))?                            \s*  # charges
@@ -227,22 +263,25 @@ sub extract_stats {
     if ($stats{item} =~ /^(statue|figurine) of (.*)$/) {
         $stats{item} = $1;
         $stats{$1}   = $2;
+
+        # drop the leading "A lichen" or "THE shopkeeper"
+        $stats{$1} =~ s/^(a|the)\s+//;
     }
 
     # go from japanese to english if possible
-    $stats{item} = NetHack::Item::Spoiler->japanese_to_english->{$stats{item}}
+    my $spoiler = $self->spoiler_class;
+
+    $stats{item} = $spoiler->japanese_to_english->{$stats{item}}
                 || $stats{item};
 
     # singularize the item if possible
-    $stats{item} = NetHack::Item::Spoiler->singularize($stats{item})
+    $stats{item} = $spoiler->singularize($stats{item})
                 || $stats{item};
 
-    $stats{type} = NetHack::Item::Spoiler->name_to_type($stats{item});
+    $stats{type} = $spoiler->name_to_type($stats{item});
 
     confess "Unknown item type for '$stats{item}' from $raw"
         if !$stats{type};
-
-    $self->_rebless_into($stats{type});
 
     # canonicalize the rest of the stats
 
@@ -299,6 +338,12 @@ sub parse_raw {
 
     my $stats = $self->extract_stats($raw);
 
+    # exploit the fact that appearances don't show up in the spoiler table as
+    # keys
+    $self->_set_appearance_and_identity($stats->{item});
+
+    $self->_rebless_into($stats->{type}, $self->subtype);
+
     $self->incorporate_stats($stats);
 }
 
@@ -314,11 +359,135 @@ sub incorporate_stats {
     $self->is_greased($stats->{greased});
     $self->is_quivered($stats->{quivered});
     $self->is_offhand($stats->{offhand});
-    $self->generic_name($stats->{generic});
-    $self->specific_name($stats->{specific});
+    $self->generic_name($stats->{generic}) if defined $stats->{generic};
+    $self->specific_name($stats->{specific}) if defined $stats->{specific};
     $self->cost($stats->{cost});
+}
 
-    $self->_best_match($stats->{item});
+sub is_artifact {
+    my $self = shift;
+
+    return 1 if $self->artifact;
+
+    my $name = $self->specific_name
+        or return 0;
+
+    my $spoiler = $self->spoiler_class->artifact_spoiler($name);
+
+    # is there even an artifact with this name?
+    return 0 unless $spoiler;
+
+    # is it the same type as us?
+    return 0 unless $spoiler->{type} eq $self->type;
+
+    # is it the EXACT name? (e.g. "gray stone named heart of ahriman" fails
+    # because it's not properly capitalized and doesn't have "The"
+    my $arti_name = $spoiler->{fullname}
+                 || $spoiler->{name};
+    return 0 unless $arti_name eq $name;
+
+    # if we know our appearance, is it a possible appearance for the
+    # artifact?
+    if (my $appearance = $self->appearance) {
+        return 0 unless grep { $appearance eq ($_||'') }
+                        $spoiler->{appearance},
+                        @{ $spoiler->{appearances} };
+    }
+
+    # if we know our identity, is the artifact's identity the same as ours?
+    # if so, then we can know definitively whether this is the artifact
+    # or not (see below)
+    if (my $identity = $self->identity) {
+        if ($identity eq $spoiler->{base}) {
+            $self->artifact($spoiler->{name});
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    # otherwise, the best we can say is "maybe". consider the artifact
+    # naming bug.  we may have a pyramidal amulet that is named The Eye of
+    # the Aethiopica. the naming bug exploits the fact that if pyramidal is
+    # NOT ESP, then it will correctly name the amulet. if pyramidal IS ESP
+    # then we cannot name it correctly -- the only pyramidal amulet that
+    # can have the name is the real Eye
+
+    return undef;
+}
+
+sub _set_appearance_and_identity {
+    my $self       = shift;
+    my $best_match = shift;
+
+    if (my $spoiler = $self->spoiler_class->spoiler_for($best_match)) {
+        if ($spoiler->{artifact}) {
+            $self->artifact($spoiler->{name});
+            $spoiler = $self->spoiler_class->spoiler_for($spoiler->{base})
+                if $spoiler->{base};
+        }
+
+        $self->identity($spoiler->{name});
+        if (defined(my $appearance = $spoiler->{appearance})) {
+            $self->appearance($appearance);
+        }
+    }
+    else {
+        $self->appearance($best_match);
+        my @possibilities = $self->possibilities;
+        if (@possibilities == 1 && $best_match ne $possibilities[0]) {
+            $self->_set_appearance_and_identity($possibilities[0]);
+        }
+    }
+
+    # this does an update if everything checks out
+    $self->is_artifact;
+}
+
+sub possibilities {
+    my $self = shift;
+    return $self->identity if $self->has_identity;
+    return sort @{ $self->spoiler_class->possibilities_for_appearance($self->appearance) };
+}
+
+sub spoiler {
+    my $self = shift;
+    return unless $self->has_identity;
+    return $self->spoiler_class->spoiler_for($self->identity);
+}
+
+sub all_spoilers {
+    my $self = shift;
+
+    return map { $self->spoiler_class->spoiler_for($_) } $self->possibilities;
+}
+
+sub spoiler_values {
+    my $self = shift;
+    my $key  = shift;
+
+    return map { $_->{$key} } $self->all_spoilers;
+}
+
+sub collapse_spoiler_value {
+    my $self = shift;
+    my $key  = shift;
+
+    my @values = $self->spoiler_values($key);
+    my $value = shift @values;
+    return undef if !defined($value);
+
+    for (@values) {
+        return undef if !defined($_) || $_ ne $value;
+    }
+
+    return $value;
+}
+
+sub subtype {
+    my $self = shift;
+    $self->collapse_spoiler_value('subtype');
 }
 
 sub can_drop { 1 }
@@ -334,14 +503,10 @@ __END__
 
 NetHack::Item - parse and interact with a NetHack item
 
-=head1 VERSION
-
-Version 0.01 released 04 Jul 08
-
 =head1 SYNOPSIS
 
     use NetHack::Item;
-    my $item = NetHack::Item->new("f - a wand of wishing (0:3) named SWEET");
+    my $item = NetHack::Item->new("f - a wand of wishing named SWEET (0:3)" );
 
     $item->slot           # f
     $item->type           # wand
@@ -362,17 +527,77 @@ Version 0.01 released 04 Jul 08
 NetHack's items are complex beasts. This library attempts to control that
 complexity.
 
-More doc soon.. in the meantime, use
-C<< NetHack::Item->new("...")->meta->compute_all_applicable_methods >> to see
-what you can do with items. Note that items are automatically blessed into
-whichever subclass the item is (e.g. L<NetHack::Item::Weapon>).
+=head1 ATTRIBUTES
 
-This library provides spoilers for all the items. However, they are not
-well-integrated into the rest of the code, since we need to add possibility
-tracking before that is useful. This is also why you can't see the identity
-of items just yet..
+These are the attributes common to every NetHack item. Subclasses (e.g. Wand)
+may have additional attributes.
 
-The code is a slight redesign of TAEB's item code.
+=over 4
+
+=item raw
+
+The raw string passed in to L</new>, to be parsed. This is the only required
+attribute.
+
+=item identity
+
+The identity of the item (a string). For example, "clear potion" will be
+"potion of water". For artifacts, the base item is used for identity, so for
+"the Eye of the Aethiopica" you'll have "amulet of ESP".
+
+=item appearance
+
+The appearance of the item (a string). For example, "potion of water" will be
+"clear potion". For artifacts, the base item is used for appearance, so for
+"the Eye of the Aethiopica" you'll have "pyramidal amulet" (or any of the
+random appearances for amulets of ESP).
+
+=item artifact
+
+The name of the artifact, if applicable. The leading "The" is stripped (so
+you'll have "Eye of the Aethiopica").
+
+=item slot
+
+The inventory or container slot in which this item resides. Obviously not
+applicable to items on the ground.
+
+=item quantity
+
+The item stack's quantity. Usually 1.
+
+=item cost
+
+The amount of zorkmids that a shopkeeper is demanding for this item.
+
+=item specific_name
+
+A name for this specific item, as opposed to a name for all items of this
+class. Artifacts use specific name.
+
+=item generic_name
+
+A name for all items of this class, as opposed to a name for a specific item.
+Identification uses generic name.
+
+=item is_wielded, is_quivered, is_greased, is_offhand
+
+Interesting boolean states of an item.
+
+=item is_blessed, is_cursed, is_uncursed
+
+Boolean states about the BUC status of an item. If one returns true, the others
+will return false.
+
+=item buc
+
+Returns "blessed", "cursed", "uncursed", or C<undef>.
+
+=item is_holy, is_unholy
+
+Synonyms for L</is_blessed> and L</is_cursed>.
+
+=back
 
 =head1 SEE ALSO
 

@@ -4,10 +4,9 @@ use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';
 
-use Memoize;
-memoize 'list';
+use constant type => 'other';
 
-sub list {
+sub _list {
     my $others = {
         'gold piece' => {
             price  => 1,
@@ -66,15 +65,6 @@ sub list {
             plural => 'blinding venoms',
         },
     };
-
-    # tag each other with its name, weight, appearances, etc
-    for my $name (keys %$others) {
-        my $stats = $others->{$name};
-        $stats->{name}       = $name;
-        $stats->{type}       = 'other';
-        $stats->{appearance} = $name
-            unless $stats->{appearance} || $stats->{appearances};
-    }
 
     return $others;
 }

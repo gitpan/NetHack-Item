@@ -19,11 +19,26 @@ sub test_items {
     my @all_checks = @_;
 
     while (my ($raw, $checks) = splice @_, 0, 2) {
-        my $item = NetHack::Item->new($raw);
+        # simplification if a lot of tests check exactly the same one thing
+        if (main->can('testing_method') && !ref($checks)) {
+            $checks = { scalar(main->testing_method) => $checks };
+        }
+
+        my $item = eval { NetHack::Item->new($raw) };
+        if (!defined($item)) {
+            Test::More::diag($@);
+            Test::More::fail("Unable to parse '$raw'")
+                for keys %$checks;
+            next;
+        }
 
         for my $check (sort keys %$checks) {
             if ($item->can($check)) {
-                Test::More::is($item->$check, $checks->{$check}, "'$raw' $check");
+                my @values = $item->$check;
+                my $value = ref($checks->{$check}) eq 'ARRAY'
+                          ? \@values
+                          : $values[0];
+                Test::More::is_deeply($value, $checks->{$check}, "'$raw' $check");
             }
             else {
                 Test::More::fail("'$raw' leaves us without a $check method");
@@ -37,7 +52,7 @@ sub plan_items {
 
     my $tests = 0;
     while (my ($item, $checks) = splice @_, 0, 2) {
-        $tests += keys %$checks;
+        $tests += ref($checks) eq 'HASH' ? keys %$checks : 1;
     }
 
     return $tests if defined wantarray;

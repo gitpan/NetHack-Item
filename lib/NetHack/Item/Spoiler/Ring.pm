@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';
 
-use Memoize;
-memoize 'list';
+use constant type => 'ring';
 
 my @rings = map { "$_ ring" } (
     qw/wooden granite opal clay coral moonstone jade bronze agate topaz
@@ -13,7 +12,7 @@ my @rings = map { "$_ ring" } (
     ivory emerald wire engagement shiny/, 'black onyx', 'tiger eye'
 );
 
-sub list {
+sub _list {
     my $rings = {
         'ring of adornment' => {
             price      => 100,
@@ -107,17 +106,7 @@ sub list {
         },
     };
 
-    # tag each ring with its name, weight, appearances, etc
-    for my $name (keys %$rings) {
-        my $stats = $rings->{$name};
-        $stats->{name}        = $name;
-        $stats->{type}        = 'ring';
-        $stats->{weight}    ||= 3;
-        $stats->{appearances} = \@rings
-            unless $stats->{appearance} || $stats->{appearances};
-    }
-
-    return $rings;
+    return $rings, (weight => 3, appearances => \@rings);
 }
 
 1;
