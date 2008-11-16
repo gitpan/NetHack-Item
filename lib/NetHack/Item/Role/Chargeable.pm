@@ -57,10 +57,13 @@ sub spend_charge {
     $self->add_charges_spent_this_recharge($count);
 
     return unless $self->charges_known;
+
     $self->subtract_charges($count);
     if ($self->charges < 0) {
         $self->charges(0);
     }
+
+    return $self->charges;
 }
 
 sub recharge {
@@ -69,13 +72,13 @@ sub recharge {
     $self->set_charges_unknown;
     $self->inc_times_recharged;
     $self->reset_charges_spent_this_recharge;
-    $self->inc_recharges if $self->has_recharges;
+    $self->inc_recharges if $self->recharges_known;
 }
 
 sub chance_to_recharge {
     my $self = shift;
 
-    return undef if !$self->has_recharges;
+    return undef if !$self->recharges_known;
 
     my $n = $self->recharges;
 
@@ -83,7 +86,12 @@ sub chance_to_recharge {
     return 100 if $n == 0;
 
     # can recharge /oW only once
-    return 0 if $self->match(identity => 'wand of wishing');
+    return 0 if $self->has_identity
+             && $self->identity eq 'wand of wishing';
+
+    # can recharge all tools except magic marker indefinitely
+    return 100 if $self->type eq 'tool'
+               && $self->identity ne 'magic marker';
 
     # (n/7)^3
     return 100 - int(100 * (($n/7) ** 3));
@@ -98,6 +106,33 @@ after incorporate_stats => sub {
     # apparently Counter sets the default to 0 for you. orz.
     $self->_clear_recharges;
     $self->recharges($stats->{recharges}) if defined($stats->{recharges});
+};
+
+after incorporate_stats_from => sub {
+    my $self  = shift;
+    my $other = shift;
+
+    $self->incorporate_stat($other => 'charges');
+    $self->incorporate_stat($other => 'recharges');
+};
+
+around is_evolution_of => sub {
+    my $orig = shift;
+    my $new = shift;
+    my $old = shift;
+
+    if ($old->recharges_known && $new->recharges_known) {
+        # lost recharges?
+        return 0 if $old->recharges > $new->recharges;
+
+        # gained charges without a recharge?
+        if ($old->charges_known && $new->charges_known) {
+            return 0 if $old->recharges == $new->recharges
+                     && $old->charges < $new->charges;
+        }
+    }
+
+    return $orig->($new, $old);
 };
 
 no Moose::Role;

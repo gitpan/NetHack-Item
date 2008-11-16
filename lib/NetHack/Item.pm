@@ -3,7 +3,9 @@ package NetHack::Item;
 use Moose;
 use MooseX::AttributeHelpers;
 
-our $VERSION = '0.02';
+use NetHack::Item::Meta::Trait::IncorporatesUndef;
+
+our $VERSION = '0.03';
 
 has raw => (
     is       => 'ro',
@@ -29,9 +31,9 @@ has artifact => (
 );
 
 has slot => (
+    traits    => [qw/IncorporatesUndef/],
     is        => 'rw',
-    isa       => 'Str',
-    predicate => 'has_slot',
+    isa       => 'Maybe[Str]',
 );
 
 has quantity => (
@@ -72,6 +74,7 @@ for my $type (qw/wield quiver grease offhand/) {
 
     has $is => (
         metaclass => 'Bool',
+        traits    => [qw/IncorporatesUndef/],
         is        => 'rw',
         isa       => 'Bool',
         default   => 0,
@@ -492,6 +495,73 @@ sub subtype {
 
 sub can_drop { 1 }
 
+sub is_evolution_of {
+    my $new = shift;
+    my $old = shift;
+
+    return 0 if $new->type ne $old->type;
+
+    return 0 if $new->has_identity
+             && $old->has_identity
+             && $new->identity ne $old->identity;
+
+    return 0 if $new->has_appearance
+             && $old->has_appearance
+             && $new->appearance ne $old->appearance;
+
+    # items can become artifacts but they cannot unbecome artifacts
+    return 0 if $old->is_artifact
+             && !$new->is_artifact;
+
+    return 1;
+}
+
+sub incorporate_stats_from {
+    my $self  = shift;
+    my $other = shift;
+
+    $other = NetHack::Item->new($other)
+        if !ref($other);
+
+    confess "New item (" . $other->raw . ") does not appear to be an evolution of the old item (" . $self->raw . ")" unless $other->is_evolution_of($self);
+
+    my @stats = (qw/slot quantity cost specific_name generic_name is_wielded
+                    is_quivered is_greased is_offhand is_blessed is_uncursed
+                    is_cursed artifact identity appearance/);
+
+    for my $stat (@stats) {
+        $self->incorporate_stat($other => $stat);
+    }
+}
+
+sub incorporate_stat {
+    my $self  = shift;
+    my $other = shift;
+    my $stat  = shift;
+
+    $other = NetHack::Item->new($other)
+        if !ref($other);
+
+    my ($old_attr, $new_attr) = map {
+        $_->meta->find_attribute_by_name($stat)
+            or confess "No attribute named ($stat)";
+    } $self, $other;
+
+    my $old_value = $old_attr->get_value($self);
+    my $new_value = $new_attr->get_value($other);
+
+    if (!defined($new_value)) {
+        # if the stat incorporates undef, then incorporate it!
+        return unless $old_attr->does('IncorporatesUndef');
+    }
+
+    return if defined($old_value)
+           && defined($new_value)
+           && $old_value eq $new_value;
+
+    $old_attr->set_value($self, $new_value);
+}
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
@@ -603,7 +673,7 @@ Synonyms for L</is_blessed> and L</is_cursed>.
 
 L<http://sartak.org/code/TAEB/>
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 Shawn M Moore, C<< <sartak@gmail.com> >>
 

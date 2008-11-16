@@ -3,8 +3,9 @@ package Test::NetHack::Item;
 use strict;
 use warnings;
 use base 'Test::More';
+use Test::Exception ();
 
-our @EXPORT = qw/test_items plan_items/;
+our @EXPORT = qw/test_items plan_items incorporate_ok evolution_not_ok/;
 
 use NetHack::Item;
 
@@ -24,7 +25,7 @@ sub test_items {
             $checks = { scalar(main->testing_method) => $checks };
         }
 
-        my $item = eval { NetHack::Item->new($raw) };
+        my $item = ref($raw) ? $raw : eval { NetHack::Item->new($raw) };
         if (!defined($item)) {
             Test::More::diag($@);
             Test::More::fail("Unable to parse '$raw'")
@@ -58,6 +59,35 @@ sub plan_items {
     return $tests if defined wantarray;
 
     Test::More::plan(tests => $tests);
+}
+
+sub incorporate_ok {
+    my $before = shift;
+    my $after  = shift;
+    my $stats  = shift;
+
+    for my $other ($after, NetHack::Item->new($after)) {
+        my $item = NetHack::Item->new($before);
+        $item->incorporate_stats_from($other);
+
+        local $Test::Builder::Level = $Test::Builder::Level + 1;
+        test_items($item, $stats);
+    }
+}
+
+sub evolution_not_ok {
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my $old_raw = shift;
+    my $new_raw = shift;
+
+    my ($old, $new) = map { NetHack::Item->new($_) } ($old_raw, $new_raw);
+
+    Test::More::ok(!$new->is_evolution_of($old), "$new_raw is not an evolution of $old_raw");
+
+    Test::Exception::throws_ok {
+        $old->incorporate_stats_from($new);
+    } qr/New item \(\Q$new_raw\E\) does not appear to be an evolution of the old item \(\Q$old_raw\E\)/;
 }
 
 1;
