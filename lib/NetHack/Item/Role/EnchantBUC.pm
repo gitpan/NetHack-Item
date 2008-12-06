@@ -1,6 +1,10 @@
 #!/usr/bin/env perl
 package NetHack::Item::Role::EnchantBUC;
+our $VERSION = '0.04';
+
 use Moose::Role;
+
+with 'NetHack::Item::Role::Enchantable';
 
 # if we know the enchantment and BUC isn't set, then set it to uncursed
 after enchantment => sub {

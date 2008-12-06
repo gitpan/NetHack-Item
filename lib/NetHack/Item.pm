@@ -1,11 +1,22 @@
 #!/usr/bin/env perl
 package NetHack::Item;
-use Moose;
+our $VERSION = '0.04';
+
+use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
 use MooseX::AttributeHelpers;
+
+use NetHack::ItemPool;
 
 use NetHack::Item::Meta::Trait::IncorporatesUndef;
 
-our $VERSION = '0.03';
+with 'NetHack::ItemPool::Role::HasPool';
+
+has tracker => (
+    is        => 'ro',
+    writer    => '_set_tracker',
+    isa       => 'NetHack::ItemPool::Tracker',
+    predicate => 'has_tracker',
+);
 
 has raw => (
     is       => 'ro',
@@ -42,7 +53,7 @@ has quantity => (
     default => 1,
 );
 
-has cost => (
+has cost_each => (
     is      => 'rw',
     isa     => 'Int',
     default => 0,
@@ -62,6 +73,14 @@ has generic_name => (
     is        => 'rw',
     isa       => 'Str',
     predicate => 'has_generic_name',
+);
+
+has container => (
+    is        => 'rw',
+    isa       => 'NetHack::Item',
+    clearer   => 'clear_container',
+    predicate => 'is_in_container',
+    weak_ref  => 1,
 );
 
 for my $type (qw/wield quiver grease offhand/) {
@@ -221,7 +240,7 @@ sub extract_stats {
     my @fields = qw/slot quantity buc greased poisoned erosion1 erosion2 proofed
                     used eaten diluted enchantment item generic specific
                     recharges charges candles lit_candelabrum lit laid chained
-                    quivered offhand offhand_wielded wielded worn cost/;
+                    quivered offhand offhand_wielded wielded worn cost altcost/;
 
     # the \b in front of "item name" forbids "Amulet of Yendor" being parsed as
     # "A mulet of Yendor"
@@ -253,12 +272,21 @@ sub extract_stats {
         (\(wielded\ in\ other.*?\))?                      \s*  # offhand wield
         (\(weapon.*?\))?                                  \s*  # wielding
         (\((?:being|embedded|on).*?\))?                   \s*  # worn
-        (?:\(unpaid,\ (\d+)\ zorkmids?\))?                \s*  # shops
+
+        # shop cost! there are two forms, with an optional quality comment
+        (?:
+            \( unpaid, \  (\d+) \  zorkmids? \)
+            |
+            ,\ no\ charge (?:,\ .*)?
+            |
+            ,\ (?:price\ )? (\d+) \  zorkmids (\ each)? (?:,\ .*)?
+        )? \s*
+
         $                                                      # anchor
     }x;
 
     # this canonicalization must come early
-    if ($stats{item} =~ /^potion of ((?:un)?holy) water$/) {
+    if ($stats{item} =~ /^potions? of ((?:un)?holy) water$/) {
         $stats{item} = 'potion of water';
         $stats{buc}  = $1;
     }
@@ -322,6 +350,9 @@ sub extract_stats {
         $stats{$_} = defined($stats{$_}) ? 1 : undef;
     }
 
+    my $altcost = delete $stats{altcost};
+    $stats{cost} ||= $altcost;
+
     # numeric, undef = 0 stats
     for (qw/candles cost/) {
         $stats{$_} = 0 if !defined($stats{$_});
@@ -364,7 +395,7 @@ sub incorporate_stats {
     $self->is_offhand($stats->{offhand});
     $self->generic_name($stats->{generic}) if defined $stats->{generic};
     $self->specific_name($stats->{specific}) if defined $stats->{specific};
-    $self->cost($stats->{cost});
+    $self->cost_each($stats->{cost});
 }
 
 sub is_artifact {
@@ -450,7 +481,14 @@ sub _set_appearance_and_identity {
 
 sub possibilities {
     my $self = shift;
-    return $self->identity if $self->has_identity;
+
+    if ($self->has_identity) {
+        return $self->identity if wantarray;
+        return 1;
+    }
+
+    return $self->tracker->possibilities if $self->has_tracker;
+
     return sort @{ $self->spoiler_class->possibilities_for_appearance($self->appearance) };
 }
 
@@ -460,37 +498,18 @@ sub spoiler {
     return $self->spoiler_class->spoiler_for($self->identity);
 }
 
-sub all_spoilers {
-    my $self = shift;
-
-    return map { $self->spoiler_class->spoiler_for($_) } $self->possibilities;
-}
-
-sub spoiler_values {
-    my $self = shift;
-    my $key  = shift;
-
-    return map { $_->{$key} } $self->all_spoilers;
-}
-
 sub collapse_spoiler_value {
     my $self = shift;
     my $key  = shift;
 
-    my @values = $self->spoiler_values($key);
-    my $value = shift @values;
-    return undef if !defined($value);
-
-    for (@values) {
-        return undef if !defined($_) || $_ ne $value;
-    }
-
-    return $value;
+    return $self->spoiler_class->collapse_value($key, $self->possibilities);
 }
 
-sub subtype {
-    my $self = shift;
-    $self->collapse_spoiler_value('subtype');
+sub weight {
+    my $self   = shift;
+    my $weight = $self->collapse_spoiler_value('weight');
+    return $weight if !defined($weight);
+    return $weight * $self->quantity;
 }
 
 sub can_drop { 1 }
@@ -525,9 +544,9 @@ sub incorporate_stats_from {
 
     confess "New item (" . $other->raw . ") does not appear to be an evolution of the old item (" . $self->raw . ")" unless $other->is_evolution_of($self);
 
-    my @stats = (qw/slot quantity cost specific_name generic_name is_wielded
-                    is_quivered is_greased is_offhand is_blessed is_uncursed
-                    is_cursed artifact identity appearance/);
+    my @stats = (qw/slot quantity cost_each specific_name generic_name
+                    is_wielded is_quivered is_greased is_offhand is_blessed
+                    is_uncursed is_cursed artifact identity appearance/);
 
     for my $stat (@stats) {
         $self->incorporate_stat($other => $stat);
@@ -562,6 +581,85 @@ sub incorporate_stat {
     $old_attr->set_value($self, $new_value);
 }
 
+sub fork_quantity {
+    my $self     = shift;
+    my $quantity = shift;
+
+    confess "Unable to fork more ($quantity) than the entire quantity (" . $self->quantity . ") of item ($self)"
+        if $quantity > $self->quantity;
+
+    confess "Unable to fork the entire quantity ($quantity) of item ($self)"
+        if $quantity == $self->quantity;
+
+    my $new_item = $self->meta->clone_instance($self);
+    $new_item->quantity($quantity);
+    $self->quantity($self->quantity - $quantity);
+
+    return $new_item;
+}
+
+# if we have only one possibility, then that is our identity
+before 'identity', 'has_identity' => sub {
+    my $self = shift;
+    return if @_;
+    return unless $self->has_tracker;
+    return if $self->tracker->possibilities > 1;
+
+    $self->identity($self->tracker->possibilities);
+};
+
+sub cost {
+    my $self = shift;
+    confess "Set cost_each instead." if @_;
+    return $self->cost_each * $self->quantity;
+}
+
+sub _match_clause {
+    my $self = shift;
+    my $value = shift;
+    my $seek = shift;
+
+    return !defined $value if !defined $seek;
+    return 0 if !defined $value;
+    return $value =~ $seek if ref($seek) eq 'Regexp';
+    return $seek->($value) if ref($seek) eq 'CODE';
+    if (ref($seek) eq 'ARRAY') {
+        for (@$seek) {
+            return 1 if $self->_match_clause($value => $_);
+        }
+    }
+    return $value eq $seek;
+}
+
+sub match {
+    my $self = shift;
+    my %args = @_;
+
+    # All the conditions must be true for true to be returned. Return
+    # immediately if a false condition is found.
+    for my $matcher (keys %args) {
+        my ($invert, $name) = $matcher =~ /^(not_)?(.*)$/;
+        my $value = $self->can($name) ? $self->$name : undef;
+        my $seek = $args{$matcher};
+
+        my $matched = $self->_match_clause($value => $seek) ? 1 : 0;
+
+        if ($invert) {
+            return 0 if $matched;
+        }
+        else {
+            return 0 unless $matched;
+        }
+    }
+
+    return 1;
+}
+
+__PACKAGE__->meta->install_spoilers(qw/subtype/);
+
+# anything can be used as a weapon
+__PACKAGE__->meta->install_spoilers(qw/sdam ldam tohit hands/);
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
@@ -572,6 +670,10 @@ __END__
 =head1 NAME
 
 NetHack::Item - parse and interact with a NetHack item
+
+=head1 VERSION
+
+version 0.04
 
 =head1 SYNOPSIS
 
@@ -679,20 +781,4 @@ Shawn M Moore, C<< <sartak@gmail.com> >>
 
 Jesse Luehrs, C<< <jluehrs2@uiuc.edu> >>
 
-=head1 BUGS
-
-No known bugs.
-
-Please report any bugs through RT: email
-C<bug-nethack-item at rt.cpan.org>, or browse
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=NetHack-Item>.
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2008 Shawn M Moore and Jesse Luehrs.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
 =cut
-

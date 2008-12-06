@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 package NetHack::Item::Other;
+our $VERSION = '0.04';
+
 use Moose;
 extends 'NetHack::Item';
 

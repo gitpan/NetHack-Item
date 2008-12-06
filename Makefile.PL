@@ -1,14 +1,24 @@
-use inc::Module::Install;
 
-name     'NetHack-Item';
-all_from 'lib/NetHack/Item.pm';
+use strict;
+use warnings;
 
-requires 'Moose' => '0.54';
-requires 'MooseX::AttributeHelpers' => '0.12';
-requires 'Module::Pluggable';
+use ExtUtils::MakeMaker;
 
-build_requires 'Test::More';
-build_requires 'Test::Exception';
-
-WriteAll;
-
+WriteMakefile(
+  DISTNAME  => 'NetHack-Item',
+  NAME      => 'NetHack::Item',
+  AUTHOR    => 'Shawn\ M\ Moore\ \<sartak\@bestpractical\.com\>',
+  ABSTRACT  => 'parse and interact with a NetHack item',
+  VERSION   => '0.04',
+  EXE_FILES => [ qw() ],
+  (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
+  PREREQ_PM    => {
+    "Module::Pluggable" => '3.8',
+    "Test::More" => '0.86',
+    "Test::Exception" => '0.27',
+    "MooseX::AttributeHelpers" => '0.12',
+    "Log::Dispatch" => '2.22',
+    "Net::Twitter" => '1.17',
+    "Moose" => '0.54',
+  },
+);

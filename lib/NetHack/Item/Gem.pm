@@ -1,14 +1,14 @@
 #!/usr/bin/env perl
 package NetHack::Item::Gem;
+our $VERSION = '0.04';
+
 use Moose;
 extends 'NetHack::Item';
 
 use constant type => "gem";
 
-has is_hard => (
-    is  => 'rw',
-    isa => 'Bool',
-);
+__PACKAGE__->meta->install_spoilers('hardness');
+sub softness { shift->hardness(@_) }
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

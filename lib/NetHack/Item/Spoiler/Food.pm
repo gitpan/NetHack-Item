@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler::Food;
+our $VERSION = '0.04';
+
 use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';

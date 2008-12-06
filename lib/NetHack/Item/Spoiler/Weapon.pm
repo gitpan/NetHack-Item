@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler::Weapon;
+our $VERSION = '0.04';
+
 use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';
@@ -603,17 +605,6 @@ sub _list {
                 appearance => 'single-edged polearm',
                 plural => 'glaives',
             },
-            'grappling hook' => {
-                sdam     => 'd2',
-                ldam     => 'd6',
-                tohit    => '0',
-                hands    => 1,
-                weight   => 30,
-                price    => 50,
-                material => 'iron',
-                appearance => 'iron hook',
-                plural => 'grappling hooks',
-            },
             'guisarme' => {
                 sdam     => '2d4',
                 ldam     => 'd8',
@@ -784,16 +775,6 @@ sub _list {
                 material => 'iron',
                 appearance => 'vulgar polearm',
                 plural => 'partisans',
-            },
-            'pick-axe' => {
-                sdam     => 'd6',
-                ldam     => 'd3',
-                tohit    => '0',
-                hands    => 1,
-                weight   => 100,
-                price    => 50,
-                material => 'iron',
-                plural => 'pick-axes',
             },
             'quarterstaff' => {
                 sdam     => 'd6',
@@ -991,16 +972,6 @@ sub _list {
                 price    => 50,
                 material => 'iron',
                 plural => 'two-handed swords',
-            },
-            'unicorn horn' => {
-                sdam     => 'd12',
-                ldam     => 'd12',
-                tohit    => '1',
-                hands    => 2,
-                weight   => 20,
-                price    => 100,
-                material => 'bone',
-                plural => 'unicorn horns',
             },
             'voulge' => {
                 sdam     => '2d4',

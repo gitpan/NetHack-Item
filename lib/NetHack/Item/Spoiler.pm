@@ -1,9 +1,15 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler;
+our $VERSION = '0.04';
+
 use strict;
 use warnings;
 
-use Module::Pluggable search_path => __PACKAGE__, require => 1;
+use Module::Pluggable (
+    search_path => __PACKAGE__,
+    require     => 1,
+    sub_name    => 'spoiler_types',
+);
 
 use Memoize;
 memoize 'list';
@@ -76,7 +82,7 @@ sub name_to_type_list {
     my $self = shift;
     my %all_types;
 
-    for my $class ($self->plugins) {
+    for my $class ($self->spoiler_types) {
         my $type = $class->type;
 
         my $list = $class->list;
@@ -191,7 +197,7 @@ sub plural_of_list {
     my $self = shift;
     my %all_plurals;
 
-    for my $class ($self->plugins) {
+    for my $class ($self->spoiler_types) {
         my $plurals = $class->plurals;
         @all_plurals{keys %$plurals} = values %$plurals;
     }
@@ -245,6 +251,22 @@ sub artifact_spoiler {
     $name =~ s/^the\s+//;
 
     return $artifact{$name};
+}
+# }}}
+# collapsing values {{{
+sub collapse_value {
+    my $self = shift;
+    my $key  = shift;
+
+    my @values = map { $self->spoiler_for($_)->{$key} } @_;
+    my $value = shift @values;
+    return undef if !defined($value);
+
+    for (@values) {
+        return undef if !defined($_) || $_ ne $value;
+    }
+
+    return $value;
 }
 # }}}
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 package NetHack::Item::Ring;
+our $VERSION = '0.04';
+
 use Moose;
 extends 'NetHack::Item';
 with 'NetHack::Item::Role::Wearable';
@@ -34,6 +36,8 @@ after incorporate_stats_from => sub {
 
     $self->incorporate_stat($other => 'hand');
 };
+
+__PACKAGE__->meta->install_spoilers('chargeable');
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

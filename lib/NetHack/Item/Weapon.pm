@@ -1,8 +1,9 @@
 #!/usr/bin/env perl
 package NetHack::Item::Weapon;
+our $VERSION = '0.04';
+
 use Moose;
 extends 'NetHack::Item';
-with 'NetHack::Item::Role::Enchantable';
 with 'NetHack::Item::Role::Damageable';
 with 'NetHack::Item::Role::EnchantBUC';
 

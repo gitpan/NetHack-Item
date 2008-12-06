@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 package Test::NetHack::Items;
+our $VERSION = '0.04';
+
 use strict;
 use warnings;
 use Test::NetHack::Item;

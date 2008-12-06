@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 package NetHack::Item::Role::Wearable;
+our $VERSION = '0.04';
+
 use Moose::Role;
 use MooseX::AttributeHelpers;
 
