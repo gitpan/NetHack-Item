@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Inventory::Equipment;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
@@ -152,7 +152,7 @@ NetHack::Inventory::Equipment - the player's equipment
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 

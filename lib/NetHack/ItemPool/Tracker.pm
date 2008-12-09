@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::ItemPool::Tracker;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Moose;
 use Set::Object;

@@ -1,5 +1,5 @@
 package NetHack::ItemPool::Tracker::Spellbook;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Moose;
 extends 'NetHack::ItemPool::Tracker';

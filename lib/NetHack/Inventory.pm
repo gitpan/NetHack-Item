@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Inventory;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Moose;
 use MooseX::AttributeHelpers;
@@ -113,7 +113,7 @@ NetHack::Inventory - the player's inventory
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
