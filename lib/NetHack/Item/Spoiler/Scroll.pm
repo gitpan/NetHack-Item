@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler::Scroll;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use strict;
 use warnings;
@@ -122,7 +122,7 @@ sub _list {
         },
     };
 
-    return $scrolls, (weight => 5, appearances => \@scrolls,
+    return $scrolls, (weight => 5, appearances => \@scrolls, stackable => 1,
                       plural => sub {
                         my $name = shift;
                         $name =~ s/\bscroll\b/scrolls/;

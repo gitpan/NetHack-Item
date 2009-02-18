@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::ItemPool::Trackers;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Moose;
 use MooseX::AttributeHelpers;
@@ -22,6 +22,14 @@ has _trackers => (
         values => 'trackers',
         get    => 'get_tracker',
     },
+);
+
+has _trackers_by_type => (
+    metaclass  => 'Collection::Hash',
+    is         => 'ro',
+    isa        => 'HashRef[ArrayRef[NetHack::ItemPool::Tracker]]',
+    lazy       => 1,
+    builder    => '_build_trackers_by_type',
 );
 
 has '+pool' => (
@@ -88,6 +96,34 @@ sub _build_trackers {
     }
 
     return $trackers;
+}
+
+sub _build_trackers_by_type {
+    my $self = shift;
+    my %trackers;
+
+    for ($self->trackers) {
+        push @{ $trackers{$_->type} }, $_;
+    }
+
+    return \%trackers;
+}
+
+sub possible_appearances_of {
+    my $self     = shift;
+    my $identity = shift;
+
+    my $type = $self->spoiler_class->name_to_type($identity);
+    confess "Unknown item '$identity'" if !$type;
+
+    my @appearances;
+
+    for my $tracker (@{ $self->_trackers_by_type->{$type} }) {
+        push @appearances, $tracker->appearance
+            if $tracker->includes_possibility($identity);
+    }
+
+    return @appearances;
 }
 
 sub tracker_for {

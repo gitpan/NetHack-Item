@@ -1,11 +1,11 @@
 
 
 This archive contains the distribution NetHack-Item, version
-0.05:
+0.06:
 
   parse and interact with a NetHack item
 
-This software is copyright (c) 2008 by Shawn M Moore.
+This software is copyright (c) 2009 by Shawn M Moore.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.

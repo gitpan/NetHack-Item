@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler::Weapon;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use strict;
 use warnings;
@@ -299,6 +299,7 @@ sub _list {
                 price    => 2,
                 material => 'iron',
                 plural => 'arrows',
+                stackable => 1,
             },
             'athame' => {
                 sdam     => 'd4',
@@ -309,6 +310,7 @@ sub _list {
                 price    => 4,
                 material => 'iron',
                 plural => 'athames',
+                stackable => 1,
             },
             'axe' => {
                 sdam     => 'd6',
@@ -373,6 +375,7 @@ sub _list {
                 price    => 20,
                 material => 'wood',
                 plural => 'boomerangs',
+                stackable => 1,
             },
             'bow' => {
                 sdam     => 'd2',
@@ -433,6 +436,7 @@ sub _list {
                 price    => 2,
                 material => 'iron',
                 plural => 'crossbow bolts',
+                stackable => 1,
             },
             'crysknife' => {
                 sdam     => 'd10',
@@ -453,6 +457,7 @@ sub _list {
                 price    => 4,
                 material => 'iron',
                 plural => 'daggers',
+                stackable => 1,
             },
             'dart' => {
                 sdam     => 'd3',
@@ -463,6 +468,7 @@ sub _list {
                 price    => 2,
                 material => 'iron',
                 plural => 'darts',
+                stackable => 1,
             },
             'dwarvish mattock' => {
                 sdam     => 'd12',
@@ -496,6 +502,7 @@ sub _list {
                 material => 'iron',
                 appearance => 'stout spear',
                 plural => 'dwarvish spears',
+                stackable => 1,
             },
             'elven arrow' => {
                 sdam     => 'd7',
@@ -507,6 +514,7 @@ sub _list {
                 material => 'wood',
                 appearance => 'runed arrow',
                 plural => 'elven arrows',
+                stackable => 1,
             },
             'elven bow' => {
                 sdam     => 'd2',
@@ -540,6 +548,7 @@ sub _list {
                 material => 'wood',
                 appearance => 'runed dagger',
                 plural => 'elven daggers',
+                stackable => 1,
             },
             'elven short sword' => {
                 sdam     => 'd8',
@@ -562,6 +571,7 @@ sub _list {
                 material => 'wood',
                 appearance => 'runed spear',
                 plural => 'elven spears',
+                stackable => 1,
             },
             'fauchard' => {
                 sdam     => 'd6',
@@ -593,6 +603,7 @@ sub _list {
                 price    => 1,
                 material => 'mineral',
                 plural => 'flintstones',
+                stackable => 1,
             },
             'glaive' => {
                 sdam     => 'd6',
@@ -637,6 +648,7 @@ sub _list {
                 material => 'iron',
                 appearance => 'throwing spear',
                 plural => 'javelins',
+                stackable => 1,
             },
             'katana' => {
                 sdam     => 'd10',
@@ -658,6 +670,7 @@ sub _list {
                 price    => 4,
                 material => 'iron',
                 plural => 'knives',
+                stackable => 1,
             },
             'lance' => {
                 sdam     => 'd6',
@@ -720,6 +733,7 @@ sub _list {
                 material => 'iron',
                 appearance => 'crude arrow',
                 plural => 'orcish arrows',
+                stackable => 1,
             },
             'orcish bow' => {
                 sdam     => 'd2',
@@ -742,6 +756,7 @@ sub _list {
                 material => 'iron',
                 appearance => 'crude dagger',
                 plural => 'orcish daggers',
+                stackable => 1,
             },
             'orcish short sword' => {
                 sdam     => 'd5',
@@ -764,6 +779,7 @@ sub _list {
                 material => 'iron',
                 appearance => 'crude spear',
                 plural => 'orcish spears',
+                stackable => 1,
             },
             'partisan' => {
                 sdam     => 'd6',
@@ -828,6 +844,7 @@ sub _list {
                 price    => 6,
                 material => 'metal',
                 plural => 'scalpels',
+                stackable => 1,
             },
             'scimitar' => {
                 sdam     => 'd8',
@@ -860,6 +877,7 @@ sub _list {
                 material => 'iron',
                 appearance => 'throwing star',
                 plural => 'shuriken',
+                stackable => 1,
             },
             'silver arrow' => {
                 sdam     => 'd6',
@@ -870,6 +888,7 @@ sub _list {
                 price    => 5,
                 material => 'silver',
                 plural => 'silver arrows',
+                stackable => 1,
             },
             'silver dagger' => {
                 sdam     => 'd4',
@@ -880,6 +899,7 @@ sub _list {
                 price    => 40,
                 material => 'silver',
                 plural => 'silver daggers',
+                stackable => 1,
             },
             'silver saber' => {
                 sdam     => 'd8',
@@ -900,6 +920,7 @@ sub _list {
                 price    => 40,
                 material => 'silver',
                 plural => 'silver spears',
+                stackable => 1,
             },
             'sling' => {
                 sdam     => 'd2',
@@ -920,6 +941,7 @@ sub _list {
                 price    => 3,
                 material => 'iron',
                 plural => 'spears',
+                stackable => 1,
             },
             'spetum' => {
                 sdam     => 'd6+1',
@@ -941,6 +963,7 @@ sub _list {
                 price    => 4,
                 material => 'iron',
                 plural => 'stilettos',
+                stackable => 1,
             },
             'trident' => {
                 sdam     => 'd6+1',
@@ -1014,6 +1037,7 @@ sub _list {
                 material => 'metal',
                 appearance => 'bamboo arrow',
                 plural => 'ya',
+                stackable => 1,
             },
             'yumi' => {
                 sdam     => 'd2',

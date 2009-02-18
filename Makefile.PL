@@ -7,9 +7,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
   DISTNAME  => 'NetHack-Item',
   NAME      => 'NetHack::Item',
-  AUTHOR    => 'Shawn\ M\ Moore\ \<sartak\@bestpractical\.com\>',
+  AUTHOR    => 'Shawn\ M\ Moore\ \<sartak\@bestpractical\.com\>\,\ Jesse\ Luehrs\ \<doy\@tozt\.net\>\,\ Sean\ Kelly\ \<cpan\@katron\.org\>',
   ABSTRACT  => 'parse and interact with a NetHack item',
-  VERSION   => '0.05',
+  VERSION   => '0.06',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler::Tool;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use strict;
 use warnings;
@@ -155,6 +155,7 @@ sub _list {
             appearance => 'candle',
             plural => 'tallow candles',
             subtype => 'light',
+            stackable => 1,
         },
         'wax candle' => {
             price => 20,
@@ -163,6 +164,7 @@ sub _list {
             appearance => 'candle',
             plural => 'wax candles',
             subtype => 'light',
+            stackable => 1,
         },
         'brass lantern' => {
             price => 12,

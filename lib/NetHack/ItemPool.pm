@@ -1,13 +1,14 @@
 #!/usr/bin/env perl
 package NetHack::ItemPool;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Moose;
-use NetHack::Item;
 
+use NetHack::Item;
 use NetHack::Inventory;
 use NetHack::ItemPool::Trackers;
 
+use constant item_class      => 'NetHack::Item';
 use constant inventory_class => 'NetHack::Inventory';
 use constant trackers_class  => 'NetHack::ItemPool::Trackers';
 
@@ -39,14 +40,20 @@ has trackers => (
             pool => $self,
         )
     },
-    handles => [qw/tracker_for/],
+    handles => [qw/tracker_for possible_appearances_of/],
 );
+
+sub _create_item {
+    my $self = shift;
+
+    unshift @_, 'raw' if @_ == 1;
+    return $self->item_class->new(@_, pool => $self);
+}
 
 sub new_item {
     my $self = shift;
 
-    unshift @_, 'raw' if @_ == 1;
-    my $item = NetHack::Item->new(@_, pool => $self);
+    my $item = $self->_create_item(@_);
 
     if ($item->is_artifact) {
         if (my $existing_arti = $self->get_artifact($item->artifact)) {
@@ -54,12 +61,8 @@ sub new_item {
             $item = $existing_arti;
         }
         else {
-            $self->_incorporate_artifact($item);
+            $self->incorporate_artifact($item);
         }
-    }
-
-    if (defined($item->slot)) {
-        $self->inventory->update($item);
     }
 
     if ($item->has_appearance && (my $tracker = $self->tracker_for($item))) {
@@ -76,10 +79,11 @@ sub get_artifact {
     return $self->artifacts->{$name};
 }
 
-sub _incorporate_artifact {
+sub incorporate_artifact {
     my $self = shift;
     my $item = shift;
 
+    return if $self->artifacts->{ $item->artifact };
     $self->artifacts->{ $item->artifact } = $item;
 }
 
@@ -96,7 +100,7 @@ NetHack::ItemPool - represents a universe of NetHack items
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 

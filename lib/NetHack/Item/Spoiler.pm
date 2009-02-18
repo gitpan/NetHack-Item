@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use strict;
 use warnings;
@@ -47,6 +47,7 @@ sub list {
         $stats->{type}        = $type;
         $stats->{weight}    ||= $defaults{weight};
         $stats->{price}     ||= $defaults{price};
+        $stats->{stackable} ||= $defaults{stackable};
         $stats->{plural}      = $defaults{plural}($name)
             if exists $defaults{plural};
 

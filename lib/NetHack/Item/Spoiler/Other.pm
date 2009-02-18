@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler::Other;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use strict;
 use warnings;
@@ -15,6 +15,7 @@ sub _list {
             weight => 0.01,
             glyph  => '$',
             plural => 'gold pieces',
+            stackable  => 1,
         },
         'boulder' => {
             price     => 0,
@@ -59,12 +60,14 @@ sub _list {
             sdam   => '2d6',
             ldam   => '2d6',
             plural => 'acid venoms',
+            stackable  => 1,
         },
         'blinding venom' => {
             price  => 0,
             weight => 1,
             glyph  => '.',
             plural => 'blinding venoms',
+            stackable  => 1,
         },
     };
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Armor::Helmet;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Moose;
 extends 'NetHack::Item::Armor';

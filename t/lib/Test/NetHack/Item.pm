@@ -1,13 +1,13 @@
 #!/usr/bin/env perl
 package Test::NetHack::Item;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use strict;
 use warnings;
 use base 'Test::More';
 use Test::Exception ();
 
-our @EXPORT = qw/test_items plan_items incorporate_ok evolution_not_ok/;
+our @EXPORT = qw/test_items plan_items incorporate_ok evolution_not_ok evolution_ok/;
 
 use NetHack::Item;
 
@@ -92,6 +92,18 @@ sub evolution_not_ok {
         $old->incorporate_stats_from($new);
     } qr/New item \(\Q$new_raw\E\) does not appear to be an evolution of the old item \(\Q$old_raw\E\)/;
 }
+
+sub evolution_ok {
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my $old_raw = shift;
+    my $new_raw = shift;
+
+    my ($old, $new) = map { NetHack::Item->new($_) } ($old_raw, $new_raw);
+
+    Test::More::ok($new->is_evolution_of($old), "$new_raw is an evolution of $old_raw");
+}
+
 
 1;
 

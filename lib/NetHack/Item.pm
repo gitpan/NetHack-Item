@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
 use MooseX::AttributeHelpers;
@@ -65,7 +65,9 @@ has specific_name => (
     predicate => 'has_specific_name',
     trigger   => sub {
         # recalculate whether this item is an artifact or not (e.g. Sting)
-        shift->is_artifact;
+        my $self = shift;
+        $self->pool->incorporate_artifact($self)
+            if $self->is_artifact && $self->has_pool;
     },
 );
 
@@ -401,54 +403,58 @@ sub incorporate_stats {
 sub is_artifact {
     my $self = shift;
 
-    return 1 if $self->artifact;
+    my $is_artifact = sub {
+        return 1 if $self->artifact;
 
-    my $name = $self->specific_name
-        or return 0;
+        my $name = $self->specific_name
+            or return 0;
 
-    my $spoiler = $self->spoiler_class->artifact_spoiler($name);
+        my $spoiler = $self->spoiler_class->artifact_spoiler($name);
 
-    # is there even an artifact with this name?
-    return 0 unless $spoiler;
+        # is there even an artifact with this name?
+        return 0 unless $spoiler;
 
-    # is it the same type as us?
-    return 0 unless $spoiler->{type} eq $self->type;
+        # is it the same type as us?
+        return 0 unless $spoiler->{type} eq $self->type;
 
-    # is it the EXACT name? (e.g. "gray stone named heart of ahriman" fails
-    # because it's not properly capitalized and doesn't have "The"
-    my $arti_name = $spoiler->{fullname}
-                 || $spoiler->{name};
-    return 0 unless $arti_name eq $name;
+        # is it the EXACT name? (e.g. "gray stone named heart of ahriman" fails
+        # because it's not properly capitalized and doesn't have "The"
+        my $arti_name = $spoiler->{fullname}
+                    || $spoiler->{name};
+        return 0 unless $arti_name eq $name;
 
-    # if we know our appearance, is it a possible appearance for the
-    # artifact?
-    if (my $appearance = $self->appearance) {
-        return 0 unless grep { $appearance eq ($_||'') }
-                        $spoiler->{appearance},
-                        @{ $spoiler->{appearances} };
-    }
-
-    # if we know our identity, is the artifact's identity the same as ours?
-    # if so, then we can know definitively whether this is the artifact
-    # or not (see below)
-    if (my $identity = $self->identity) {
-        if ($identity eq $spoiler->{base}) {
-            $self->artifact($spoiler->{name});
-            return 1;
+        # if we know our appearance, is it a possible appearance for the
+        # artifact?
+        if (my $appearance = $self->appearance) {
+            return 0 unless grep { $appearance eq ($_||'') }
+                            $spoiler->{appearance},
+                            @{ $spoiler->{appearances} };
         }
-        else {
-            return 0;
+
+        # if we know our identity, is the artifact's identity the same as ours?
+        # if so, then we can know definitively whether this is the artifact
+        # or not (see below)
+        if (my $identity = $self->identity) {
+            if ($identity eq $spoiler->{base}) {
+                $self->artifact($spoiler->{name});
+                return 1;
+            }
+            else {
+                return 0;
+            }
         }
-    }
 
-    # otherwise, the best we can say is "maybe". consider the artifact
-    # naming bug.  we may have a pyramidal amulet that is named The Eye of
-    # the Aethiopica. the naming bug exploits the fact that if pyramidal is
-    # NOT ESP, then it will correctly name the amulet. if pyramidal IS ESP
-    # then we cannot name it correctly -- the only pyramidal amulet that
-    # can have the name is the real Eye
+        # otherwise, the best we can say is "maybe". consider the artifact
+        # naming bug.  we may have a pyramidal amulet that is named The Eye of
+        # the Aethiopica. the naming bug exploits the fact that if pyramidal is
+        # NOT ESP, then it will correctly name the amulet. if pyramidal IS ESP
+        # then we cannot name it correctly -- the only pyramidal amulet that
+        # can have the name is the real Eye
 
-    return undef;
+        return undef;
+    }->();
+
+    return $is_artifact;
 }
 
 sub _set_appearance_and_identity {
@@ -474,9 +480,6 @@ sub _set_appearance_and_identity {
             $self->_set_appearance_and_identity($possibilities[0]);
         }
     }
-
-    # this does an update if everything checks out
-    $self->is_artifact;
 }
 
 sub possibilities {
@@ -496,6 +499,14 @@ sub spoiler {
     my $self = shift;
     return unless $self->has_identity;
     return $self->spoiler_class->spoiler_for($self->identity);
+}
+
+sub spoiler_values {
+    my $self = shift;
+    my $key  = shift;
+
+    return map { $self->spoiler_class->spoiler_for($_)->{$key} }
+           $self->possibilities;
 }
 
 sub collapse_spoiler_value {
@@ -533,6 +544,13 @@ sub is_evolution_of {
              && !$new->is_artifact;
 
     return 1;
+}
+
+sub maybe_is {
+    my $self = shift;
+    my $other = shift;
+
+    return $self->is_evolution_of($other) || $other->is_evolution_of($self);
 }
 
 sub incorporate_stats_from {
@@ -614,48 +632,50 @@ sub cost {
     return $self->cost_each * $self->quantity;
 }
 
-sub _match_clause {
-    my $self = shift;
-    my $value = shift;
-    my $seek = shift;
-
-    return !defined $value if !defined $seek;
-    return 0 if !defined $value;
-    return $value =~ $seek if ref($seek) eq 'Regexp';
-    return $seek->($value) if ref($seek) eq 'CODE';
-    if (ref($seek) eq 'ARRAY') {
-        for (@$seek) {
-            return 1 if $self->_match_clause($value => $_);
-        }
-    }
-    return $value eq $seek;
-}
-
-sub match {
+sub throw_range {
     my $self = shift;
     my %args = @_;
 
-    # All the conditions must be true for true to be returned. Return
-    # immediately if a false condition is found.
-    for my $matcher (keys %args) {
-        my ($invert, $name) = $matcher =~ /^(not_)?(.*)$/;
-        my $value = $self->can($name) ? $self->$name : undef;
-        my $seek = $args{$matcher};
+    my $range = int($args{strength} / 2);
 
-        my $matched = $self->_match_clause($value => $seek) ? 1 : 0;
+    if (($self->identity||'') eq 'heavy iron ball') {
+        $range -= int($self->weight / 100);
+    }
+    else {
+        $range -= int($self->weight / 40);
+    }
 
-        if ($invert) {
-            return 0 if $matched;
+    $range = 1 if $range < 1;
+
+    if ($self->type eq 'gem' || ($self->identity||'') =~ /\b(?:arrow|crossbow bolt)\b/) {
+        if (0 && "Wielding a bow for arrows or crossbow for bolts or sling for gems") {
+            ++$range;
         }
-        else {
-            return 0 unless $matched;
+        elsif ($self->type ne 'gem') {
+            $range = int($range / 2);
         }
     }
 
-    return 1;
+    # are we on Air? are we levitating?
+
+    if (($self->identity||'') eq 'boulder') {
+        $range = 20;
+    }
+    elsif (($self->identity||'') eq 'Mjollnir') {
+        $range = int(($range + 1) / 2);
+    }
+
+    # are we underwater?
+
+    return $range;
 }
 
-__PACKAGE__->meta->install_spoilers(qw/subtype/);
+sub name {
+    my $self = shift;
+    $self->artifact || $self->identity || $self->appearance
+}
+
+__PACKAGE__->meta->install_spoilers(qw/subtype stackable/);
 
 # anything can be used as a weapon
 __PACKAGE__->meta->install_spoilers(qw/sdam ldam tohit hands/);
@@ -673,7 +693,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 
@@ -774,11 +794,5 @@ Synonyms for L</is_blessed> and L</is_cursed>.
 =head1 SEE ALSO
 
 L<http://sartak.org/code/TAEB/>
-
-=head1 AUTHORS
-
-Shawn M Moore, C<< <sartak@gmail.com> >>
-
-Jesse Luehrs, C<< <jluehrs2@uiuc.edu> >>
 
 =cut

@@ -1,5 +1,5 @@
 package NetHack::Item::Meta::Trait::InstallsSpoilers;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Moose::Role;
 

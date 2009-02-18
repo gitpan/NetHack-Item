@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Inventory;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Moose;
 use MooseX::AttributeHelpers;
@@ -29,13 +29,21 @@ has equipment => (
     is      => 'ro',
     isa     => 'NetHack::Inventory::Equipment',
     lazy    => 1,
-    handles => qr/^(?!update|remove|(has_)?pool)\w/,
+    handles => qr/^(?!update|remove|(has_)?pool|slots)\w/,
     default => sub {
         my $self = shift;
         $self->equipment_class->new(
             pool => $self->pool,
         )
     },
+);
+
+has weight => (
+    is      => 'ro',
+    isa     => 'Int',
+    lazy    => 1,
+    builder => '_calculate_weight',
+    clearer => 'invalidate_weight',
 );
 
 has '+pool' => (
@@ -64,18 +72,32 @@ around set => sub {
 
     my ($slot, $item) = _extract_slot(@_);
 
+    # gold pieces don't belong in inventory
+    return if $item->has_identity
+           && $item->identity eq 'gold piece';
+
     $self->$orig($slot => $item);
 };
 
 sub update {
     my $self = shift;
+    my $args = ref($_[0]) eq 'HASH' ? shift : {};
     my ($slot, $item) = _extract_slot(@_);
+
+    # gold pieces don't belong in inventory
+    return if $item->has_identity
+           && $item->identity eq 'gold piece';
 
     if (my $old = $self->get($slot)) {
         if ($item->is_evolution_of($old)) {
+            my $old_quantity = $old->quantity;
             $old->incorporate_stats_from($item);
+            $old->slot($slot);
+            $old->quantity($old_quantity + $item->quantity)
+                if $args->{add} && $old->stackable;
         }
         else {
+            warn "Displacing $old in slot $slot with $item.";
             $self->set($slot => $item);
         }
 
@@ -86,11 +108,15 @@ sub update {
     return $item;
 }
 
-after update => sub {
+sub add { shift->update({add => 1}, @_) }
+
+after 'set', 'update', => sub {
     my $self = shift;
+    my $args = ref($_[0]) eq 'HASH' ? shift : {};
     my (undef, $item) = _extract_slot(@_);
 
     $self->equipment->update($item);
+    $self->invalidate_weight;
 };
 
 before remove => sub {
@@ -99,6 +125,48 @@ before remove => sub {
 
     $self->equipment->remove($item);
 };
+
+sub exact_weight {
+    my $self = shift;
+
+    my $weight = 0;
+    for my $item ($self->items) {
+        return undef if !defined($item->weight);
+        $weight += $item->weight;
+    }
+
+    return $weight;
+}
+
+sub _calculate_weight {
+    my $self = shift;
+
+    my ($total_min, $total_max) = (0, 0);
+    for my $item ($self->items) {
+        my ($min, $max) = (sort $item->spoiler_values('weight'))[0, -1];
+        $total_min += $min * $item->quantity;
+        $total_max += $max * $item->quantity;
+    }
+
+    return int(($total_max + $total_min) / 2);
+}
+
+sub decrease_quantity {
+    my $self = shift;
+    my $slot = shift;
+    my $by   = shift || 1;
+
+    my $item = $self->get($slot);
+    my $orig_quantity = $item->quantity;
+
+    if ($by >= $orig_quantity) {
+        $self->remove($slot);
+        return 0;
+    }
+
+    $item->quantity($orig_quantity - $by);
+    return $item->quantity;
+}
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
@@ -113,7 +181,7 @@ NetHack::Inventory - the player's inventory
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Spoiler::Gem;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use strict;
 use warnings;
@@ -243,7 +243,7 @@ sub _list {
         },
     };
 
-    return $gems, (weight => 1);
+    return $gems, (weight => 1, stackable => 1);
 }
 
 sub extra_plurals {

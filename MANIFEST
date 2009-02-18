@@ -4,6 +4,7 @@ MANIFEST
 META.yml
 Makefile.PL
 README
+REPOSITORIES
 dist.ini
 lib/NetHack/Inventory.pm
 lib/NetHack/Inventory/Equipment.pm
@@ -102,9 +103,11 @@ t/118-spell.t
 t/119-cost-each.t
 t/120-spoilers.t
 t/121-numeric-enchantment.t
+t/122-eggs.t
 t/200-spoilers.t
 t/201-artifacts.t
 t/202-naming-artifacts.t
+t/203-creating-excalibur.t
 t/300-subtype.t
 t/400-incorporate.t
 t/401-incorporate-id-appearance.t
@@ -120,5 +123,6 @@ t/603-equipment.t
 t/700-tracker.t
 t/701-wand-engrave.t
 t/702-ruleout-propagation.t
+t/703-more-wands.t
 t/lib/Test/NetHack/Item.pm
 t/lib/Test/NetHack/Items.pm

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 package NetHack::Item::Role::Damageable;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Moose::Role;
 use MooseX::AttributeHelpers;
@@ -41,6 +41,11 @@ after incorporate_stats_from => sub {
     $self->incorporate_stat($other => $_)
         for qw/burnt corroded rotted rusty proofed/;
 };
+
+sub remove_damage {
+    my $self = shift;
+    $self->$_(0) for qw/burnt corroded rotted rusty/;
+}
 
 no Moose::Role;
 
