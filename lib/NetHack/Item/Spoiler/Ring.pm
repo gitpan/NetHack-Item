@@ -1,7 +1,5 @@
-
-#!/usr/bin/env perl
 package NetHack::Item::Spoiler::Ring;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use strict;
 use warnings;

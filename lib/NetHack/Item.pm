@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
 use MooseX::AttributeHelpers;
@@ -8,6 +7,7 @@ use MooseX::AttributeHelpers;
 use NetHack::ItemPool;
 
 use NetHack::Item::Meta::Trait::IncorporatesUndef;
+use NetHack::Item::Meta::Types;
 
 with 'NetHack::ItemPool::Role::HasPool';
 
@@ -272,7 +272,7 @@ sub extract_stats {
         (\(in\ quiver\))?                                 \s*  # quivered
         (\(alternate\ weapon;\ not\ wielded\))?           \s*  # offhand
         (\(wielded\ in\ other.*?\))?                      \s*  # offhand wield
-        (\(weapon.*?\))?                                  \s*  # wielding
+        (\((?:weapon|wielded).*?\))?                      \s*  # wielding
         (\((?:being|embedded|on).*?\))?                   \s*  # worn
 
         # shop cost! there are two forms, with an optional quality comment
@@ -516,13 +516,6 @@ sub collapse_spoiler_value {
     return $self->spoiler_class->collapse_value($key, $self->possibilities);
 }
 
-sub weight {
-    my $self   = shift;
-    my $weight = $self->collapse_spoiler_value('weight');
-    return $weight if !defined($weight);
-    return $weight * $self->quantity;
-}
-
 sub can_drop { 1 }
 
 sub is_evolution_of {
@@ -675,10 +668,29 @@ sub name {
     $self->artifact || $self->identity || $self->appearance
 }
 
-__PACKAGE__->meta->install_spoilers(qw/subtype stackable/);
+# Anything can be wielded; subclasses may provide more options
+sub specific_slots { [] }
+
+sub fits_in_slot {
+    my ($self, $slot) = @_;
+
+    return 1 if $slot eq "weapon" || $slot eq "offhand";
+
+    grep { $_ eq $slot } @{ $self->specific_slots };
+}
+
+__PACKAGE__->meta->install_spoilers(qw/subtype stackable material weight/);
 
 # anything can be used as a weapon
 __PACKAGE__->meta->install_spoilers(qw/sdam ldam tohit hands/);
+
+around weight => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $weight = $orig->($self, @_);
+    return $weight if !defined($weight);
+    return $weight * $self->quantity;
+};
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
@@ -693,7 +705,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

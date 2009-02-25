@@ -4,6 +4,7 @@ author:
   - Shawn M Moore <sartak@bestpractical.com>
   - Jesse Luehrs <doy@tozt.net>
   - Sean Kelly <cpan@katron.org>
+  - Stefan O'Rear <stefanor@cox.net>
 generated_by: Dist::Zilla::Plugin::MetaYaml version 1.003
 license: perl
 name: NetHack-Item
@@ -16,4 +17,4 @@ requires:
   Set::Object: 1.00
   Test::Exception: 0.27
   Test::More: 0.86
-version: 0.06
+version: 0.07

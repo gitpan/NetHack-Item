@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Armor;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose;
 extends 'NetHack::Item';
@@ -13,6 +12,8 @@ use constant type => "armor";
 
 sub base_ac { shift->collapse_spoiler_value('ac') }
 
+sub specific_slots { [shift->subtype] }
+
 sub ac {
     my $self = shift;
     my $base = $self->base_ac;
@@ -20,6 +21,14 @@ sub ac {
 
     my $enchantment = $self->enchantment;
     return $base + $enchantment;
+}
+
+my %metals = map {$_ => 1} qw/metal iron mithril copper silver gold platinum/;
+
+sub is_metallic {
+    my $matl = shift->material;
+
+    defined $matl ? ($metals{$matl} ? 1 : 0) : undef;
 }
 
 __PACKAGE__->meta->install_spoilers('mc');

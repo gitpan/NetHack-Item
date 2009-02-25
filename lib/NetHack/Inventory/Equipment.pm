@@ -1,13 +1,12 @@
-#!/usr/bin/env perl
 package NetHack::Inventory::Equipment;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
 
 sub weapon_slots { qw/weapon offhand quiver/ }
 sub armor_slots  { qw/helmet gloves boots bodyarmor cloak shirt shield/ }
-sub accessory_slots { qw/left_ring right_ring amulet/ }
+sub accessory_slots { qw/left_ring right_ring amulet blindfold/ }
 
 sub slots {
     my $self = shift;
@@ -57,6 +56,29 @@ sub _update_ring {
     }
 }
 
+sub _update_nonring_accessory {
+    my $self = shift;
+    my $item = shift;
+
+    my $slot;
+
+    if ($item->isa('NetHack::Item::Amulet')) {
+        $slot = 'amulet';
+    } elsif ($item->isa('NetHack::Item::Tool::Accessory')) {
+        $slot = 'blindfold';
+    } else {
+        return;
+    }
+
+    if ($item->is_worn) {
+        if ($item != ($self->$slot || 0)) {
+            my $clearer = "clear_$slot";
+            $self->$clearer;
+            $self->$slot($item);
+        }
+    }
+}
+
 sub _update_weapon {
     my $self = shift;
     my $item = shift;
@@ -76,12 +98,10 @@ sub _update_armor {
     my $self = shift;
     my $item = shift;
 
-    return unless $item->does('NetHack::Item::Role::Wearable');
+    return unless $item->type eq 'armor';
 
     if ($item->is_worn) {
-        my $slot = $item->type eq 'armor'
-                 ? $item->subtype
-                 : $item->type;
+        my $slot = $item->subtype;
 
         if ($item != ($self->$slot || 0)) {
             my $clearer = "clear_$slot";
@@ -116,7 +136,7 @@ for my $slot (keys %weapon_slots) {
     };
 };
 
-for my $slot (__PACKAGE__->armor_slots) {
+for my $slot (__PACKAGE__->armor_slots, "amulet", "blindfold") {
     before "clear_$slot" => sub {
         my $self = shift;
         my $item = $self->$slot or return;
@@ -133,6 +153,106 @@ for my $hand (qw/left_ring right_ring/) {
     };
 }
 
+# everything except weapons hard depends on itself because
+# there is no quick swap for armour
+my %dependencies = (
+    shirt => {
+        hard => [qw/cloak bodyarmor shirt/],
+        two_hand => 'soft',
+    },
+    bodyarmor => {
+        hard => [qw/cloak bodyarmor/],
+        two_hand => 'soft',
+    },
+    cloak => {
+        hard => [qw/cloak/],
+    },
+    left_ring => {
+        hard => [qw/left_ring/],
+        soft => [qw/gloves/],
+        two_hand => 'soft',
+    },
+    right_ring => {
+        hard => [qw/right_ring/],
+        soft => [qw/gloves weapon/],
+    },
+    gloves => {
+        hard => [qw/gloves/],
+        soft => [qw/weapon/],
+    },
+    helmet => {
+        hard => [qw/helmet/],
+    },
+    boots => {
+        hard => [qw/boots/],
+    },
+    shield => {
+        hard => [qw/shield/],
+        two_hand => 'hard',
+    },
+    amulet => {
+        hard => [qw/amulet/],
+    },
+    blindfold => {
+        hard => [qw/blindfold/],
+    },
+    weapon => {
+        soft => [qw/weapon/],
+    },
+    offhand => {
+        soft => [qw/weapon/],
+    },
+    quiver => {
+    },
+);
+
+sub _covering_slots {
+    my ($self, $slot, $hardonly) = @_;
+    my $dependencies = $dependencies{$slot};
+    my @hard_deps = @{ $dependencies->{hard} || [] };
+    my @soft_deps = @{ $dependencies->{soft} || [] };
+
+    my @covering;
+    push @covering, 'weapon'
+        if $dependencies->{two_hand}
+        && ($dependencies->{two_hand} eq 'hard' || !$hardonly)
+        && $self->weapon && $self->weapon->hands == 2;
+
+    push @covering, @hard_deps;
+    push @covering, @soft_deps unless $hardonly;
+
+    return grep { $self->$_ } @covering;
+}
+
+
+sub under_cursed {
+    my ($self, $slot) = @_;
+
+    for my $cslot ($self->_covering_slots($slot, 0)) {
+        return 1 if $self->$cslot->is_cursed;
+    }
+
+    return 0;
+}
+
+sub blockers {
+    my ($self, $slot) = @_;
+
+    my @r;
+
+    for my $cslot ($self->_covering_slots($slot, 1)) {
+        push @r, $cslot, $self->$cslot;
+    }
+
+    return @r if wantarray;
+    return $r[1];
+}
+
+sub slots_inside_out {
+    qw/shirt bodyarmor boots helmet cloak right_ring left_ring gloves shield
+       amulet blindfold offhand weapon quiver/;
+}
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
@@ -146,7 +266,7 @@ NetHack::Inventory::Equipment - the player's equipment
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 
@@ -159,5 +279,21 @@ version 0.06
     is($pool->inventory->weapon, $grayswandir);
 
 =head1 DESCRIPTION
+
+=head2 under_cursed SLOT
+
+Returns true if the slot is inaccessible because it is covered by at
+least one cursed item.
+
+=head2 blockers SLOT
+
+Returns a list of (slot,item) pairs for items that cover the slot and
+have to be removed to access it, outermost first; or the item for the
+outermost blocker in scalar context.
+
+=head2 slots_inside_out
+
+Returns a list of all slots, ordered such that changing a slot need not
+affect any slot earlier in the list.  Right ring comes before left ring.
 
 =cut

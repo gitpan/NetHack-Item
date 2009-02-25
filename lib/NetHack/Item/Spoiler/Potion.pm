@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Spoiler::Potion;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use strict;
 use warnings;
@@ -98,7 +97,7 @@ sub _list {
     };
 
     return $potions, (weight => 20, appearances => \@potions, stackable => 1,
-                      plural => sub {
+                      material => 'glass', plural => sub {
                         my $name = shift;
                         $name =~ s/\bpotion\b/potions/;
                         return $name;

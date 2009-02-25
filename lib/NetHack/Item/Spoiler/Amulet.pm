@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Spoiler::Amulet;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use strict;
 use warnings;
@@ -20,6 +19,7 @@ sub _list {
             artifact => 1,
             fullname => 'The Amulet of Yendor',
             appearance => 'Amulet of Yendor',
+            material => 'mithril',
         },
 
         'Eye of the Aethiopica' => {
@@ -28,37 +28,41 @@ sub _list {
             artifact => 1,
             fullname => 'The Eye of the Aethiopica',
             base     => 'amulet of ESP',
+            material => 'iron',
         },
 
         'cheap plastic imitation of the Amulet of Yendor' => {
             price      => 0,
             appearance => 'Amulet of Yendor',
+            material   => 'plastic',
         },
 
         'amulet of change' => {
-            edible => 1,
+            edible => 1, material => 'iron',
         },
         'amulet of ESP' => {
-            edible => 1,
+            edible => 1, material => 'iron',
         },
         'amulet of life saving' => {
+            material => 'iron',
         },
         'amulet of magical breathing' => {
-            edible => 1,
+            edible => 1, material => 'iron',
         },
         'amulet of reflection' => {
+            material => 'iron',
         },
         'amulet of restful sleep' => {
-            edible => 1,
+            edible => 1, material => 'iron',
         },
         'amulet of strangulation' => {
-            edible => 1,
+            edible => 1, material => 'iron',
         },
         'amulet of unchanging' => {
-            edible => 1,
+            edible => 1, material => 'iron',
         },
         'amulet versus poison' => {
-            edible => 1,
+            edible => 1, material => 'iron',
         },
     };
 

@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Spoiler::Spellbook;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use strict;
 use warnings;
@@ -334,7 +333,8 @@ sub _list {
         },
     };
 
-    return $spellbooks, (weight => 50, appearances => \@spellbooks);
+    return $spellbooks, (weight => 50, material => 'paper',
+                         appearances => \@spellbooks);
 }
 
 1;

@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Spoiler;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use strict;
 use warnings;
@@ -18,6 +17,7 @@ memoize 'possibilities_to_appearances';
 memoize 'plurals';
 memoize 'plural_of_list';
 memoize 'singular_of_list';
+memoize 'all_identities';
 
 my %artifact;
 
@@ -46,6 +46,7 @@ sub list {
         $stats->{name}        = $name;
         $stats->{type}        = $type;
         $stats->{weight}    ||= $defaults{weight};
+        $stats->{material}  ||= $defaults{material};
         $stats->{price}     ||= $defaults{price};
         $stats->{stackable} ||= $defaults{stackable};
         $stats->{plural}      = $defaults{plural}($name)
@@ -106,6 +107,20 @@ sub name_to_type_list {
     }
 
     return \%all_types;
+}
+
+sub all_identities {
+    my $self = shift;
+    my @identities;
+
+    for my $class ($self->spoiler_types) {
+        my $list = $class->list;
+        for (values %$list) {
+            push @identities, $_->{name};
+        }
+    }
+
+    return @identities;
 }
 
 sub name_to_type {

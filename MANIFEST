@@ -23,6 +23,7 @@ lib/NetHack/Item/Food/Corpse.pm
 lib/NetHack/Item/Gem.pm
 lib/NetHack/Item/Meta/Trait/IncorporatesUndef.pm
 lib/NetHack/Item/Meta/Trait/InstallsSpoilers.pm
+lib/NetHack/Item/Meta/Types.pm
 lib/NetHack/Item/Other.pm
 lib/NetHack/Item/Potion.pm
 lib/NetHack/Item/Ring.pm
@@ -46,6 +47,7 @@ lib/NetHack/Item/Spoiler/Ring.pm
 lib/NetHack/Item/Spoiler/Scroll.pm
 lib/NetHack/Item/Spoiler/Spellbook.pm
 lib/NetHack/Item/Spoiler/Tool.pm
+lib/NetHack/Item/Spoiler/Tool.pm-darcs-backup0
 lib/NetHack/Item/Spoiler/Wand.pm
 lib/NetHack/Item/Spoiler/Weapon.pm
 lib/NetHack/Item/Tool.pm
@@ -104,6 +106,8 @@ t/119-cost-each.t
 t/120-spoilers.t
 t/121-numeric-enchantment.t
 t/122-eggs.t
+t/123-fits-in-slot.t
+t/124-material.t
 t/200-spoilers.t
 t/201-artifacts.t
 t/202-naming-artifacts.t
@@ -120,6 +124,7 @@ t/600-pool-new-item.t
 t/601-artifact.t
 t/602-inventory.t
 t/603-equipment.t
+t/604-layering.t
 t/700-tracker.t
 t/701-wand-engrave.t
 t/702-ruleout-propagation.t

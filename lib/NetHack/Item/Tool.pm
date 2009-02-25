@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Tool;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose;
 extends 'NetHack::Item';

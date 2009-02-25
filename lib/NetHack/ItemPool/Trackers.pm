@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::ItemPool::Trackers;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose;
 use MooseX::AttributeHelpers;

@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::ItemPool;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose;
 
@@ -100,7 +99,7 @@ NetHack::ItemPool - represents a universe of NetHack items
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

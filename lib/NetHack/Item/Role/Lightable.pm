@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Role::Lightable;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose::Role;
 use MooseX::AttributeHelpers;

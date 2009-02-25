@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
 package NetHack::Item::Ring;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Moose;
 extends 'NetHack::Item';
@@ -9,6 +8,7 @@ with 'NetHack::Item::Role::Enchantable';
 use Moose::Util::TypeConstraints qw/subtype as where/;
 
 use constant type => "ring";
+use constant specific_slots => [qw/left_ring right_ring/];
 
 subtype 'NetHack::Item::Hand'
      => as 'Item'
