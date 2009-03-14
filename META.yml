@@ -5,7 +5,7 @@ author:
   - Jesse Luehrs <doy@tozt.net>
   - Sean Kelly <cpan@katron.org>
   - Stefan O'Rear <stefanor@cox.net>
-generated_by: Dist::Zilla::Plugin::MetaYaml version 1.003
+generated_by: Dist::Zilla::Plugin::MetaYaml version 1.004
 license: perl
 name: NetHack-Item
 requires: 
@@ -17,4 +17,4 @@ requires:
   Set::Object: 1.00
   Test::Exception: 0.27
   Test::More: 0.86
-version: 0.07
+version: 0.08

@@ -9,7 +9,7 @@ WriteMakefile(
   NAME      => 'NetHack::Item',
   AUTHOR    => 'Shawn\ M\ Moore\ \<sartak\@bestpractical\.com\>\,\ Jesse\ Luehrs\ \<doy\@tozt\.net\>\,\ Sean\ Kelly\ \<cpan\@katron\.org\>\,\ Stefan\ O\'Rear\ \<stefanor\@cox\.net\>',
   ABSTRACT  => 'parse and interact with a NetHack item',
-  VERSION   => '0.07',
+  VERSION   => '0.08',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

@@ -1,5 +1,5 @@
 package NetHack::Inventory;
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 use Moose;
 use MooseX::AttributeHelpers;
@@ -94,6 +94,9 @@ sub update {
             $old->slot($slot);
             $old->quantity($old_quantity + $item->quantity)
                 if $args->{add} && $old->stackable;
+
+            $self->equipment->update($old);
+            $self->invalidate_weight;
         }
         else {
             warn "Displacing $old in slot $slot with $item.";
@@ -109,7 +112,7 @@ sub update {
 
 sub add { shift->update({add => 1}, @_) }
 
-after 'set', 'update', => sub {
+after 'set' => sub {
     my $self = shift;
     my $args = ref($_[0]) eq 'HASH' ? shift : {};
     my (undef, $item) = _extract_slot(@_);
@@ -180,7 +183,7 @@ NetHack::Inventory - the player's inventory
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 

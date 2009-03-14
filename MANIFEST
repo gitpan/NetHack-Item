@@ -124,6 +124,7 @@ t/600-pool-new-item.t
 t/601-artifact.t
 t/602-inventory.t
 t/603-equipment.t
+t/604-equipment-incorporate.t
 t/604-layering.t
 t/700-tracker.t
 t/701-wand-engrave.t
