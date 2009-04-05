@@ -1,5 +1,5 @@
 package NetHack::Item::Tool::Light;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Moose;
 extends 'NetHack::Item::Tool';

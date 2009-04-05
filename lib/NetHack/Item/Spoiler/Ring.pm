@@ -1,5 +1,5 @@
 package NetHack::Item::Spoiler::Ring;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
@@ -129,7 +129,7 @@ sub _list {
         },
     };
 
-    return $rings, (weight => 3, appearances => \@rings);
+    return $rings, (weight => 3, appearances => \@rings, glyph => '=');
 }
 
 1;

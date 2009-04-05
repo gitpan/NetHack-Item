@@ -1,5 +1,5 @@
 package NetHack::Item::Spoiler::Weapon;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
@@ -1051,7 +1051,7 @@ sub _list {
             },
     };
 
-    return $weapons;
+    return $weapons, (glyph => ')');
 }
 
 # these are stackable weapon appearances where name != appearance

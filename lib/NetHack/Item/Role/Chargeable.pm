@@ -1,5 +1,5 @@
 package NetHack::Item::Role::Chargeable;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Moose::Role;
 use MooseX::AttributeHelpers;

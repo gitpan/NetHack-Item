@@ -9,12 +9,11 @@ generated_by: Dist::Zilla::Plugin::MetaYaml version 1.004
 license: perl
 name: NetHack-Item
 requires: 
-  Log::Dispatch: 2.22
   Module::Pluggable: 3.8
   Moose: 0.54
   MooseX::AttributeHelpers: 0.12
-  Net::Twitter: 1.17
+  NetHack::Monster::Spoiler: 0.02
   Set::Object: 1.00
   Test::Exception: 0.27
   Test::More: 0.86
-version: 0.08
+version: 0.09

@@ -1,5 +1,5 @@
 package NetHack::Item::Tool::Container;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Moose;
 use MooseX::AttributeHelpers;

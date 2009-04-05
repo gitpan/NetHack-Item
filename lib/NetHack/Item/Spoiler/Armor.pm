@@ -1,5 +1,5 @@
 package NetHack::Item::Spoiler::Armor;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ sub _list {
         'Mitre of Holiness' => {
             artifact   => 1,
             base       => 'helm of brilliance',
-            value      => 2000,
+            price      => 2000,
             weight     => 50,
             ac         => 1,
             mc         => 0,
@@ -27,7 +27,7 @@ sub _list {
         },
 
         'Hawaiian shirt' => {
-            value      => 3,
+            price      => 3,
             weight     => 5,
             ac         => 0,
             mc         => 0,
@@ -35,7 +35,7 @@ sub _list {
             subtype    => 'shirt',
         },
         'T-shirt' => {
-            value      => 2,
+            price      => 2,
             weight     => 5,
             ac         => 0,
             mc         => 0,
@@ -44,7 +44,7 @@ sub _list {
         },
 
         'leather jacket' => {
-            value      => 10,
+            price      => 10,
             weight     => 30,
             ac         => 1,
             mc         => 0,
@@ -52,7 +52,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'leather armor' => {
-            value      => 5,
+            price      => 5,
             weight     => 150,
             ac         => 2,
             mc         => 0,
@@ -60,7 +60,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'orcish ring mail' => {
-            value      => 80,
+            price      => 80,
             weight     => 250,
             ac         => 2,
             material   => 'iron',
@@ -69,7 +69,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'studded leather armor' => {
-            value      => 15,
+            price      => 15,
             weight     => 200,
             ac         => 3,
             material   => 'leather',
@@ -77,7 +77,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'ring mail' => {
-            value      => 100,
+            price      => 100,
             weight     => 250,
             ac         => 3,
             mc         => 0,
@@ -85,7 +85,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'scale mail' => {
-            value      => 45,
+            price      => 45,
             weight     => 250,
             ac         => 4,
             mc         => 0,
@@ -93,7 +93,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'orcish chain mail' => {
-            value      => 75,
+            price      => 75,
             weight     => 300,
             ac         => 4,
             material   => 'iron',
@@ -102,7 +102,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'chain mail' => {
-            value      => 75,
+            price      => 75,
             weight     => 300,
             ac         => 5,
             material   => 'iron',
@@ -110,7 +110,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'elven mithril-coat' => {
-            value      => 240,
+            price      => 240,
             weight     => 150,
             ac         => 5,
             material   => 'mithril',
@@ -118,7 +118,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'splint mail' => {
-            value      => 80,
+            price      => 80,
             weight     => 400,
             ac         => 6,
             material   => 'iron',
@@ -126,7 +126,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'banded mail' => {
-            value      => 90,
+            price      => 90,
             weight     => 350,
             ac         => 6,
             mc         => 0,
@@ -134,7 +134,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'dwarvish mithril-coat' => {
-            value      => 240,
+            price      => 240,
             weight     => 150,
             ac         => 6,
             material   => 'mithril',
@@ -142,7 +142,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'bronze plate mail' => {
-            value      => 400,
+            price      => 400,
             weight     => 450,
             ac         => 6,
             mc         => 0,
@@ -150,7 +150,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'plate mail' => {
-            value      => 600,
+            price      => 600,
             weight     => 450,
             ac         => 7,
             material   => 'iron',
@@ -158,7 +158,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'crystal plate mail' => {
-            value      => 820,
+            price      => 820,
             weight     => 450,
             ac         => 7,
             material   => 'glass',
@@ -166,7 +166,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'red dragon scales' => {
-            value      => 500,
+            price      => 500,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -174,7 +174,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'white dragon scales' => {
-            value      => 500,
+            price      => 500,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -182,7 +182,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'orange dragon scales' => {
-            value      => 500,
+            price      => 500,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -190,7 +190,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'blue dragon scales' => {
-            value      => 500,
+            price      => 500,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -198,7 +198,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'green dragon scales' => {
-            value      => 500,
+            price      => 500,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -206,7 +206,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'yellow dragon scales' => {
-            value      => 500,
+            price      => 500,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -214,7 +214,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'black dragon scales' => {
-            value      => 700,
+            price      => 700,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -222,7 +222,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'silver dragon scales' => {
-            value      => 700,
+            price      => 700,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -230,7 +230,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'gray dragon scales' => {
-            value      => 700,
+            price      => 700,
             weight     => 40,
             ac         => 3,
             mc         => 0,
@@ -238,7 +238,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'red dragon scale mail' => {
-            value      => 900,
+            price      => 900,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -246,7 +246,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'white dragon scale mail' => {
-            value      => 900,
+            price      => 900,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -254,7 +254,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'orange dragon scale mail' => {
-            value      => 900,
+            price      => 900,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -262,7 +262,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'blue dragon scale mail' => {
-            value      => 900,
+            price      => 900,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -270,7 +270,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'green dragon scale mail' => {
-            value      => 900,
+            price      => 900,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -278,7 +278,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'yellow dragon scale mail' => {
-            value      => 900,
+            price      => 900,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -286,7 +286,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'black dragon scale mail' => {
-            value      => 1200,
+            price      => 1200,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -294,7 +294,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'silver dragon scale mail' => {
-            value      => 1200,
+            price      => 1200,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -302,7 +302,7 @@ sub _list {
             subtype    => 'bodyarmor',
         },
         'gray dragon scale mail' => {
-            value      => 1200,
+            price      => 1200,
             weight     => 40,
             ac         => 9,
             mc         => 0,
@@ -311,7 +311,7 @@ sub _list {
         },
 
         'mummy wrapping' => {
-            value      => 2,
+            price      => 2,
             weight     => 3,
             ac         => 0,
             material   => 'cloth',
@@ -319,7 +319,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'orcish cloak' => {
-            value      => 40,
+            price      => 40,
             weight     => 10,
             ac         => 0,
             material   => 'cloth',
@@ -328,7 +328,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'dwarvish cloak' => {
-            value      => 50,
+            price      => 50,
             weight     => 10,
             ac         => 0,
             material   => 'cloth',
@@ -337,7 +337,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'leather cloak' => {
-            value      => 40,
+            price      => 40,
             weight     => 15,
             ac         => 1,
             material   => 'leather',
@@ -345,7 +345,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'oilskin cloak' => {
-            value      => 50,
+            price      => 50,
             weight     => 10,
             ac         => 1,
             material   => 'cloth',
@@ -354,7 +354,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'alchemy smock' => {
-            value      => 50,
+            price      => 50,
             weight     => 10,
             ac         => 1,
             material   => 'cloth',
@@ -363,7 +363,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'elven cloak' => {
-            value      => 60,
+            price      => 60,
             weight     => 10,
             ac         => 1,
             material   => 'cloth',
@@ -372,7 +372,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'robe' => {
-            value      => 50,
+            price      => 50,
             weight     => 15,
             ac         => 2,
             material   => 'cloth',
@@ -380,7 +380,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'cloak of displacement' => {
-            value       => 50,
+            price       => 50,
             weight      => 10,
             ac          => 1,
             material    => 'cloth',
@@ -389,7 +389,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'cloak of invisibility' => {
-            value       => 60,
+            price       => 60,
             weight      => 10,
             ac          => 1,
             material    => 'cloth',
@@ -398,7 +398,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'cloak of magic resistance' => {
-            value       => 60,
+            price       => 60,
             weight      => 10,
             ac          => 1,
             material    => 'cloth',
@@ -407,7 +407,7 @@ sub _list {
             subtype    => 'cloak',
         },
         'cloak of protection' => {
-            value       => 50,
+            price       => 50,
             weight      => 10,
             ac          => 3,
             material    => 'cloth',
@@ -417,7 +417,7 @@ sub _list {
         },
 
         'fedora' => {
-            value      => 1,
+            price      => 1,
             weight     => 3,
             ac         => 0,
             mc         => 0,
@@ -425,7 +425,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'dunce cap' => {
-            value      => 1,
+            price      => 1,
             weight     => 4,
             ac         => 0,
             mc         => 0,
@@ -434,7 +434,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'cornuthaum' => {
-            value      => 80,
+            price      => 80,
             weight     => 4,
             ac         => 0,
             material   => 'cloth',
@@ -443,7 +443,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'dented pot' => {
-            value      => 8,
+            price      => 8,
             weight     => 10,
             ac         => 1,
             mc         => 0,
@@ -451,7 +451,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'elven leather helm' => {
-            value      => 8,
+            price      => 8,
             weight     => 3,
             ac         => 1,
             mc         => 0,
@@ -460,7 +460,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'orcish helm' => {
-            value      => 10,
+            price      => 10,
             weight     => 30,
             ac         => 1,
             mc         => 0,
@@ -469,7 +469,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'dwarvish iron helm' => {
-            value      => 20,
+            price      => 20,
             weight     => 40,
             ac         => 2,
             mc         => 0,
@@ -478,7 +478,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'helmet' => {
-            value       => 10,
+            price       => 10,
             weight      => 30,
             ac          => 1,
             mc         => 0,
@@ -487,7 +487,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'helm of brilliance' => {
-            value       => 50,
+            price       => 50,
             weight      => 50,
             ac          => 1,
             mc         => 0,
@@ -496,7 +496,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'helm of opposite alignment' => {
-            value       => 50,
+            price       => 50,
             weight      => 50,
             ac          => 1,
             mc         => 0,
@@ -505,7 +505,7 @@ sub _list {
             subtype    => 'helmet',
         },
         'helm of telepathy' => {
-            value       => 50,
+            price       => 50,
             weight      => 50,
             ac          => 1,
             mc         => 0,
@@ -515,7 +515,7 @@ sub _list {
         },
 
         'leather gloves' => {
-            value       => 8,
+            price       => 8,
             weight      => 10,
             ac          => 1,
             mc         => 0,
@@ -524,7 +524,7 @@ sub _list {
             subtype    => 'gloves',
         },
         'gauntlets of dexterity' => {
-            value       => 50,
+            price       => 50,
             weight      => 10,
             ac          => 1,
             mc         => 0,
@@ -533,7 +533,7 @@ sub _list {
             subtype    => 'gloves',
         },
         'gauntlets of fumbling' => {
-            value       => 50,
+            price       => 50,
             weight      => 10,
             ac          => 1,
             mc         => 0,
@@ -542,7 +542,7 @@ sub _list {
             subtype    => 'gloves',
         },
         'gauntlets of power' => {
-            value       => 50,
+            price       => 50,
             weight      => 30,
             ac          => 1,
             mc         => 0,
@@ -552,7 +552,7 @@ sub _list {
         },
 
         'small shield' => {
-            value      => 3,
+            price      => 3,
             weight     => 30,
             ac         => 1,
             mc         => 0,
@@ -560,7 +560,7 @@ sub _list {
             subtype    => 'shield',
         },
         'orcish shield' => {
-            value      => 7,
+            price      => 7,
             weight     => 50,
             ac         => 1,
             mc         => 0,
@@ -569,7 +569,7 @@ sub _list {
             subtype    => 'shield',
         },
         'Uruk-hai shield' => {
-            value      => 7,
+            price      => 7,
             weight     => 50,
             ac         => 1,
             mc         => 0,
@@ -578,7 +578,7 @@ sub _list {
             subtype    => 'shield',
         },
         'elven shield' => {
-            value      => 7,
+            price      => 7,
             weight     => 40,
             ac         => 2,
             mc         => 0,
@@ -587,7 +587,7 @@ sub _list {
             subtype    => 'shield',
         },
         'dwarvish roundshield' => {
-            value      => 10,
+            price      => 10,
             weight     => 100,
             ac         => 2,
             mc         => 0,
@@ -596,7 +596,7 @@ sub _list {
             subtype    => 'shield',
         },
         'large shield' => {
-            value      => 10,
+            price      => 10,
             weight     => 100,
             ac         => 2,
             mc         => 0,
@@ -604,7 +604,7 @@ sub _list {
             subtype    => 'shield',
         },
         'shield of reflection' => {
-            value      => 50,
+            price      => 50,
             weight     => 50,
             ac         => 2,
             mc         => 0,
@@ -614,7 +614,7 @@ sub _list {
         },
 
         'low boots' => {
-            value      => 8,
+            price      => 8,
             weight     => 10,
             ac         => 1,
             mc         => 0,
@@ -623,7 +623,7 @@ sub _list {
             subtype    => 'boots',
         },
         'high boots' => {
-            value      => 12,
+            price      => 12,
             weight     => 20,
             ac         => 2,
             mc         => 0,
@@ -632,7 +632,7 @@ sub _list {
             subtype    => 'boots',
         },
         'iron shoes' => {
-            value      => 16,
+            price      => 16,
             weight     => 50,
             ac         => 2,
             mc         => 0,
@@ -641,7 +641,7 @@ sub _list {
             subtype    => 'boots',
         },
         'elven boots' => {
-            value       => 8,
+            price       => 8,
             weight      => 15,
             ac          => 1,
             mc         => 0,
@@ -650,7 +650,7 @@ sub _list {
             subtype    => 'boots',
         },
         'kicking boots' => {
-            value       => 8,
+            price       => 8,
             weight      => 15,
             ac          => 1,
             mc         => 0,
@@ -659,7 +659,7 @@ sub _list {
             subtype    => 'boots',
         },
         'fumble boots' => {
-            value       => 30,
+            price       => 30,
             weight      => 20,
             ac          => 1,
             mc         => 0,
@@ -668,7 +668,7 @@ sub _list {
             subtype    => 'boots',
         },
         'levitation boots' => {
-            value       => 30,
+            price       => 30,
             weight      => 15,
             ac          => 1,
             mc         => 0,
@@ -677,7 +677,7 @@ sub _list {
             subtype    => 'boots',
         },
         'jumping boots' => {
-            value       => 50,
+            price       => 50,
             weight      => 20,
             ac          => 1,
             mc         => 0,
@@ -686,7 +686,7 @@ sub _list {
             subtype    => 'boots',
         },
         'speed boots' => {
-            value       => 50,
+            price       => 50,
             weight      => 20,
             ac          => 1,
             mc         => 0,
@@ -695,7 +695,7 @@ sub _list {
             subtype    => 'boots',
         },
         'water walking boots' => {
-            value       => 50,
+            price       => 50,
             weight      => 20,
             ac          => 1,
             mc         => 0,
@@ -705,7 +705,7 @@ sub _list {
         },
     };
 
-    return $armor;
+    return $armor, (glyph => '[');
 }
 
 1;

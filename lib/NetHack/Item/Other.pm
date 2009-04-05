@@ -1,5 +1,5 @@
 package NetHack::Item::Other;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Moose;
 extends 'NetHack::Item';
@@ -12,17 +12,11 @@ has is_chained_to_you => (
     isa    => 'Bool',
 );
 
-has statue => (
-    is  => 'rw',
-    isa => 'Str',
-);
-
 after incorporate_stats => sub {
     my $self  = shift;
     my $stats = shift;
 
     $self->is_chained_to_you($stats->{chained});
-    $self->statue($stats->{statue}) if exists $stats->{statue};
 };
 
 after incorporate_stats_from => sub {
@@ -31,6 +25,8 @@ after incorporate_stats_from => sub {
 
     $self->incorporate_stat($other => 'is_chained_to_you');
 };
+
+__PACKAGE__->meta->install_spoilers(qw/monster/);
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

@@ -1,5 +1,5 @@
 package NetHack::Item::Role::Wearable;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Moose::Role;
 use MooseX::AttributeHelpers;

@@ -1,5 +1,5 @@
 package NetHack::Item::Spoiler::Amulet;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
@@ -66,7 +66,8 @@ sub _list {
         },
     };
 
-    return $amulets, (weight => 20, price => 150, appearances => \@amulets);
+    return $amulets, (weight => 20, price => 150, appearances => \@amulets,
+                      glyph => '"');
 }
 
 1;

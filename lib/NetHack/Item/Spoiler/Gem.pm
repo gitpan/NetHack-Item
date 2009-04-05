@@ -1,5 +1,5 @@
 package NetHack::Item::Spoiler::Gem;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
@@ -279,7 +279,7 @@ sub _list {
         },
     };
 
-    return $gems, (weight => 1, stackable => 1);
+    return $gems, (weight => 1, stackable => 1, glyph => '*');
 }
 
 sub extra_plurals {

@@ -1,5 +1,5 @@
 package NetHack::Item;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
 use MooseX::AttributeHelpers;
@@ -291,14 +291,6 @@ sub extract_stats {
     if ($stats{item} =~ /^potions? of ((?:un)?holy) water$/) {
         $stats{item} = 'potion of water';
         $stats{buc}  = $1;
-    }
-
-    if ($stats{item} =~ /^(statue|figurine) of (.*)$/) {
-        $stats{item} = $1;
-        $stats{$1}   = $2;
-
-        # drop the leading "A lichen" or "THE shopkeeper"
-        $stats{$1} =~ s/^(a|the)\s+//;
     }
 
     # go from japanese to english if possible
@@ -679,7 +671,8 @@ sub fits_in_slot {
     grep { $_ eq $slot } @{ $self->specific_slots };
 }
 
-__PACKAGE__->meta->install_spoilers(qw/subtype stackable material weight/);
+__PACKAGE__->meta->install_spoilers(qw/subtype stackable material weight price
+                                       plural glyph/);
 
 # anything can be used as a weapon
 __PACKAGE__->meta->install_spoilers(qw/sdam ldam tohit hands/);
@@ -705,7 +698,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

@@ -1,5 +1,5 @@
 package NetHack::Item::Spoiler::Wand;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
@@ -136,7 +136,7 @@ sub _list {
         },
     };
 
-    return $wands, (weight => 7, appearances => \@wands);
+    return $wands, (weight => 7, appearances => \@wands, glyph => '/');
 }
 
 1;

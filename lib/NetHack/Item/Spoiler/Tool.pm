@@ -1,9 +1,10 @@
 package NetHack::Item::Spoiler::Tool;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';
+use NetHack::Monster::Spoiler;
 
 use constant type => 'tool';
 
@@ -463,13 +464,6 @@ sub _list {
             charge => 25,
             material => 'iron',
         },
-        'figurine' => {
-            price => 80,
-            weight => 50,
-            charge => 0,
-            subtype => 'figurine',
-            material => 'mineral',
-        },
         'magic marker' => {
             price => 50,
             weight => 2,
@@ -478,7 +472,26 @@ sub _list {
         },
     };
 
-    return $tools;
+    for my $monster (NetHack::Monster::Spoiler->list) {
+        next if $monster->is_unique;
+        next if $monster->is_human;
+        next if $monster->name eq 'mail daemon';
+
+        my $name = "figurine of ";
+        $name .= $monster->name =~ /^[aeiou]/i ? "an " : "a ";
+        $name .= $monster->name;
+
+        $tools->{$name} = {
+            price    => 80,
+            weight   => 50,
+            charge   => 0,
+            subtype  => 'figurine',
+            material => 'mineral',
+            monster  => $monster,
+        };
+    }
+
+    return $tools, (glyph => '(');
 }
 
 sub extra_plurals {

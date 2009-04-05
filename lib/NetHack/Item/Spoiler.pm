@@ -1,5 +1,5 @@
 package NetHack::Item::Spoiler;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use strict;
 use warnings;
@@ -49,6 +49,7 @@ sub list {
         $stats->{material}  ||= $defaults{material};
         $stats->{price}     ||= $defaults{price};
         $stats->{stackable} ||= $defaults{stackable};
+        $stats->{glyph}     ||= $defaults{glyph};
         $stats->{plural}      = $defaults{plural}($name)
             if exists $defaults{plural};
 
