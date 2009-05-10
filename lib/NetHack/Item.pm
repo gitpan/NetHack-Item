@@ -1,5 +1,5 @@
 package NetHack::Item;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
 use MooseX::AttributeHelpers;
@@ -594,7 +594,7 @@ sub fork_quantity {
     confess "Unable to fork the entire quantity ($quantity) of item ($self)"
         if $quantity == $self->quantity;
 
-    my $new_item = $self->meta->clone_instance($self);
+    my $new_item = $self->meta->clone_object($self);
     $new_item->quantity($quantity);
     $self->quantity($self->quantity - $quantity);
 
@@ -698,7 +698,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 

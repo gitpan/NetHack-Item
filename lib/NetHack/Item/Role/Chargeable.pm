@@ -1,5 +1,5 @@
 package NetHack::Item::Role::Chargeable;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 use Moose::Role;
 use MooseX::AttributeHelpers;
@@ -100,21 +100,18 @@ sub chance_to_recharge {
 
 after incorporate_stats => sub {
     my $self  = shift;
-    my $stats = shift;
-
-    $self->charges($stats->{charges}) if defined($stats->{charges});
-
-    # apparently Counter sets the default to 0 for you. orz.
+    # Counter sets the default to 0 for you, but we want it to be undef
     $self->_clear_recharges;
-    $self->recharges($stats->{recharges}) if defined($stats->{recharges});
 };
 
-after incorporate_stats_from => sub {
-    my $self  = shift;
-    my $other = shift;
+with 'NetHack::Item::Role::IncorporatesStats' => {
+    attribute    => 'charges',
+    defined_stat => 1,
+};
 
-    $self->incorporate_stat($other => 'charges');
-    $self->incorporate_stat($other => 'recharges');
+with 'NetHack::Item::Role::IncorporatesStats' => {
+    attribute    => 'recharges',
+    defined_stat => 1,
 };
 
 around is_evolution_of => sub {

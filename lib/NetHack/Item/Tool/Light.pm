@@ -1,5 +1,5 @@
 package NetHack::Item::Tool::Light;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 use Moose;
 extends 'NetHack::Item::Tool';
@@ -13,18 +13,9 @@ has is_partly_used => (
     default => 0,
 );
 
-after incorporate_stats => sub {
-    my $self  = shift;
-    my $stats = shift;
-
-    $self->is_partly_used($stats->{used});
-};
-
-after incorporate_stats_from => sub {
-    my $self  = shift;
-    my $other = shift;
-
-    $self->incorporate_stat($other => 'is_partly_used');
+with 'NetHack::Item::Role::IncorporatesStats' => {
+    attribute => 'is_partly_used',
+    stat      => 'used',
 };
 
 __PACKAGE__->meta->make_immutable;

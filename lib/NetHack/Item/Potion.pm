@@ -1,5 +1,5 @@
 package NetHack::Item::Potion;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 use Moose;
 extends 'NetHack::Item';
@@ -14,18 +14,9 @@ has is_diluted => (
     default => 0,
 );
 
-after incorporate_stats => sub {
-    my $self  = shift;
-    my $stats = shift;
-
-    $self->is_diluted($stats->{diluted});
-};
-
-after incorporate_stats_from => sub {
-    my $self  = shift;
-    my $other = shift;
-
-    $self->incorporate_stat($other => 'is_diluted');
+with 'NetHack::Item::Role::IncorporatesStats' => {
+    attribute => 'is_diluted',
+    stat      => 'diluted',
 };
 
 __PACKAGE__->meta->make_immutable;

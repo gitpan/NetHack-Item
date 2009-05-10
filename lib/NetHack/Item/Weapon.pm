@@ -1,5 +1,5 @@
 package NetHack::Item::Weapon;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 use Moose;
 extends 'NetHack::Item';
@@ -14,18 +14,9 @@ has is_poisoned => (
     isa    => 'Bool',
 );
 
-after incorporate_stats => sub {
-    my $self  = shift;
-    my $stats = shift;
-
-    $self->is_poisoned($stats->{poisoned});
-};
-
-after incorporate_stats_from => sub {
-    my $self  = shift;
-    my $other = shift;
-
-    $self->incorporate_stat($other => 'is_poisoned');
+with 'NetHack::Item::Role::IncorporatesStats' => {
+    attribute => 'is_poisoned',
+    stat      => 'poisoned',
 };
 
 around can_drop => sub {

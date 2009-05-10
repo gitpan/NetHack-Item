@@ -1,5 +1,5 @@
 package NetHack::Item::Role::Wearable;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 use Moose::Role;
 use MooseX::AttributeHelpers;
@@ -14,6 +14,12 @@ has is_worn => (
         unset => 'remove',
     },
 );
+
+with 'NetHack::Item::Role::IncorporatesStats' => {
+    attribute => 'is_worn',
+    stat      => 'worn',
+    bool_stat => 1,
+};
 
 around is_worn => sub {
     my $orig = shift;
@@ -56,20 +62,6 @@ around is_worn => sub {
     }
 
     return $ret;
-};
-
-after incorporate_stats => sub {
-    my $self  = shift;
-    my $stats = shift;
-
-    $self->is_worn($stats->{worn} ? 1 : 0);
-};
-
-after incorporate_stats_from => sub {
-    my $self  = shift;
-    my $other = shift;
-
-    $self->incorporate_stat($other => 'is_worn');
 };
 
 around can_drop => sub {
