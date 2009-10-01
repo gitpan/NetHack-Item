@@ -1,6 +1,4 @@
 package NetHack::Item::Food::Corpse;
-our $VERSION = '0.10';
-
 use Moose;
 extends 'NetHack::Item::Food';
 

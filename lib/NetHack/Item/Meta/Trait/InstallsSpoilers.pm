@@ -1,6 +1,4 @@
 package NetHack::Item::Meta::Trait::InstallsSpoilers;
-our $VERSION = '0.10';
-
 use Moose::Role;
 
 sub install_spoilers {

@@ -1,6 +1,4 @@
 package NetHack::Item::Role::ChargeBUC;
-our $VERSION = '0.10';
-
 use Moose::Role;
 
 with 'NetHack::Item::Role::Chargeable';

@@ -1,6 +1,4 @@
 package NetHack::Item::Amulet;
-our $VERSION = '0.10';
-
 use Moose;
 extends 'NetHack::Item';
 with 'NetHack::Item::Role::Wearable';

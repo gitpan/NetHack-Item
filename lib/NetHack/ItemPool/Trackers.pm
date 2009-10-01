@@ -1,8 +1,5 @@
 package NetHack::ItemPool::Trackers;
-our $VERSION = '0.10';
-
 use Moose;
-use MooseX::AttributeHelpers;
 with 'NetHack::ItemPool::Role::HasPool';
 
 use NetHack::ItemPool::Tracker;
@@ -12,19 +9,18 @@ use constant tracker_class => 'NetHack::ItemPool::Tracker';
 use constant spoiler_class => 'NetHack::Item::Spoiler';
 
 has _trackers => (
-    metaclass  => 'Collection::Hash',
+    traits     => ['Hash'],
     is         => 'ro',
     isa        => 'HashRef[NetHack::ItemPool::Tracker]',
     lazy       => 1,
     builder    => '_build_trackers',
-    provides   => {
-        values => 'trackers',
-        get    => 'get_tracker',
+    handles    => {
+        trackers    => 'values',
+        get_tracker => 'get',
     },
 );
 
 has _trackers_by_type => (
-    metaclass  => 'Collection::Hash',
     is         => 'ro',
     isa        => 'HashRef[ArrayRef[NetHack::ItemPool::Tracker]]',
     lazy       => 1,

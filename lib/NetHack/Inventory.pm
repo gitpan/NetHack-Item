@@ -1,8 +1,5 @@
 package NetHack::Inventory;
-our $VERSION = '0.10';
-
 use Moose;
-use MooseX::AttributeHelpers;
 with 'NetHack::ItemPool::Role::HasPool';
 
 use NetHack::Inventory::Equipment;
@@ -10,17 +7,17 @@ use NetHack::Inventory::Equipment;
 use constant equipment_class => 'NetHack::Inventory::Equipment';
 
 has inventory => (
-    metaclass => 'Collection::Hash',
+    traits    => ['Hash'],
     is        => 'ro',
     isa       => 'HashRef[NetHack::Item]',
     default   => sub { {} },
-    provides  => {
-        get    => 'get',
-        set    => 'set',
-        delete => 'remove',
-        values => 'items',
-        keys   => 'slots',
-        empty  => 'has_items',
+    handles   => {
+        get       => 'get',
+        set       => 'set',
+        remove    => 'delete',
+        items     => 'values',
+        slots     => 'keys',
+        has_items => 'count',
     },
 );
 
@@ -99,7 +96,8 @@ sub update {
             $self->invalidate_weight;
         }
         else {
-            warn "Displacing $old in slot $slot with $item.";
+            warn "Displacing [" . $old->raw . "] in slot $slot with "
+               . "[" . $item->raw . "].";
             $self->set($slot => $item);
         }
 
@@ -181,10 +179,6 @@ __END__
 
 NetHack::Inventory - the player's inventory
 
-=head1 VERSION
-
-version 0.10
-
 =head1 SYNOPSIS
 
     use NetHack::ItemPool;
@@ -204,3 +198,4 @@ version 0.10
 =head1 DESCRIPTION
 
 =cut
+

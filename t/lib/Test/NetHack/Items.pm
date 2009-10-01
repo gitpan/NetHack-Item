@@ -1,6 +1,4 @@
 package Test::NetHack::Items;
-our $VERSION = '0.10';
-
 use strict;
 use warnings;
 use Test::NetHack::Item;

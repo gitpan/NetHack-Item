@@ -1,6 +1,4 @@
 package NetHack::ItemPool::Tracker::Potion;
-our $VERSION = '0.10';
-
 use Moose;
 extends 'NetHack::ItemPool::Tracker';
 

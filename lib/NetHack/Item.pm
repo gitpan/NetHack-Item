@@ -1,13 +1,12 @@
 package NetHack::Item;
-our $VERSION = '0.10';
-
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
-use MooseX::AttributeHelpers;
 
 use NetHack::ItemPool;
 
 use NetHack::Item::Meta::Trait::IncorporatesUndef;
 use NetHack::Item::Meta::Types;
+
+our $VERSION = '0.11';
 
 with 'NetHack::ItemPool::Role::HasPool';
 
@@ -94,14 +93,13 @@ for my $type (qw/wield quiver grease offhand/) {
     }
 
     has $is => (
-        metaclass => 'Bool',
-        traits    => [qw/IncorporatesUndef/],
+        traits    => [qw/Bool IncorporatesUndef/],
         is        => 'rw',
         isa       => 'Bool',
         default   => 0,
-        provides  => {
-            set   => "$type",
-            unset => "un$type",
+        handles   => {
+            "$type"   => 'set',
+            "un$type" => 'unset',
         },
     )
 }
@@ -109,6 +107,7 @@ for my $type (qw/wield quiver grease offhand/) {
 for my $buc (qw/is_blessed is_uncursed is_cursed/) {
     my %others = map { $_ => 1 } qw/is_blessed is_uncursed is_cursed/;
     delete $others{$buc};
+    my @others = keys %others;
 
     has $buc => (
         is      => 'rw',
@@ -119,11 +118,11 @@ for my $buc (qw/is_blessed is_uncursed is_cursed/) {
 
             # if this is true, the others must be false
             if ($set) {
-                $self->$_(0) for keys %others;
+                $self->$_(0) for @others;
             }
             # if this is false, then see if only one can be true
             elsif (defined($set)) {
-                my %other_vals = map { $_ => $self->$_ } keys %others;
+                my %other_vals = map { $_ => $self->$_ } @others;
 
                 my $unknown = 0;
 
@@ -135,9 +134,15 @@ for my $buc (qw/is_blessed is_uncursed is_cursed/) {
                 # multiple items are unknown, we can't narrow it down
                 return if $unknown > 1;
 
-                # only one item is unknown, find it and set it to true
-                my ($must_be_true) = grep { !defined($other_vals{$_}) }
-                                     keys %other_vals;
+                # if only one item is unknown, find it and set it to true
+                my @must_be_true = grep { !defined($other_vals{$_}) }
+                                   @others;
+
+                # no unknowns, we're good
+                return if @must_be_true == 0;
+
+                my ($must_be_true) = @must_be_true;
+
                 $self->$must_be_true(1);
             }
         },
@@ -229,8 +234,8 @@ sub _rebless_into {
     return if !blessed($self);
 
     my $class = $self->choose_item_class($type, $subtype);
-    my $meta = Class::MOP::load_class($class);
-    $meta->rebless_instance($self);
+    Class::MOP::load_class($class);
+    $class->meta->rebless_instance($self);
 }
 
 sub extract_stats {
@@ -696,10 +701,6 @@ __END__
 
 NetHack::Item - parse and interact with a NetHack item
 
-=head1 VERSION
-
-version 0.10
-
 =head1 SYNOPSIS
 
     use NetHack::Item;
@@ -796,8 +797,26 @@ Synonyms for L</is_blessed> and L</is_cursed>.
 
 =back
 
+=head1 AUTHORS
+
+Shawn M Moore, C<sartak@bestpractical.com>
+
+Jesse Luehrs, C<doy@tozt.net>
+
+Sean Kelly, C<cpan@katron.org>
+
+Stefan O'Rear, C<stefanor@cox.net>
+
 =head1 SEE ALSO
 
 L<http://sartak.org/code/TAEB/>
 
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2009 Shawn M Moore.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
 =cut
+

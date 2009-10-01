@@ -1,6 +1,4 @@
 package Test::NetHack::Item;
-our $VERSION = '0.10';
-
 use strict;
 use warnings;
 use base 'Test::More';
@@ -64,6 +62,7 @@ sub plan_items {
 }
 
 sub incorporate_ok {
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $before = shift;
     my $after  = shift;
     my $stats  = shift;
@@ -72,7 +71,6 @@ sub incorporate_ok {
         my $item = NetHack::Item->new($before);
         $item->incorporate_stats_from($other);
 
-        local $Test::Builder::Level = $Test::Builder::Level + 1;
         test_items($item, $stats);
     }
 }

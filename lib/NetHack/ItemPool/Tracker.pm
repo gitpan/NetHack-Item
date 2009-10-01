@@ -1,6 +1,4 @@
 package NetHack::ItemPool::Tracker;
-our $VERSION = '0.10';
-
 use Moose;
 use Set::Object;
 with 'NetHack::ItemPool::Role::HasPool';
@@ -10,7 +8,6 @@ use Module::Pluggable (
     require     => 1,
     sub_name    => 'tracker_types',
 );
-__PACKAGE__->tracker_types; # load all
 
 has type => (
     is       => 'ro',
@@ -56,9 +53,8 @@ sub BUILD {
     my $self = shift;
 
     my $class = __PACKAGE__ . '::' . ucfirst($self->type);
-    if (my $meta = Class::MOP::load_class($class)) {
-        $meta->rebless_instance($self);
-    }
+    Class::MOP::load_class($class);
+    $class->meta->rebless_instance($self);
 }
 
 around BUILDARGS => sub {
@@ -121,6 +117,10 @@ around rule_out => sub {
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
+
+# need to delay this until after this class is already immutable, or else the
+# subclasses get broken constructors
+__PACKAGE__->tracker_types; # load all
 
 1;
 

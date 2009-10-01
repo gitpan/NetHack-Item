@@ -1,6 +1,4 @@
 package NetHack::ItemPool::Tracker::Weapon;
-our $VERSION = '0.10';
-
 use Moose;
 extends 'NetHack::ItemPool::Tracker';
 

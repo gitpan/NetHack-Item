@@ -1,6 +1,4 @@
 package NetHack::Inventory::Equipment;
-our $VERSION = '0.10';
-
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
 
@@ -264,10 +262,6 @@ __END__
 
 NetHack::Inventory::Equipment - the player's equipment
 
-=head1 VERSION
-
-version 0.10
-
 =head1 SYNOPSIS
 
     use NetHack::ItemPool;
@@ -297,3 +291,4 @@ Returns a list of all slots, ordered such that changing a slot need not
 affect any slot earlier in the list.  Right ring comes before left ring.
 
 =cut
+
