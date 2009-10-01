@@ -1,4 +1,7 @@
 package NetHack::Item::Tool::Container;
+our $VERSION = '0.12';
+
+
 use Moose;
 extends 'NetHack::Item::Tool';
 

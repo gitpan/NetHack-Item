@@ -1,4 +1,7 @@
 package NetHack::Inventory;
+our $VERSION = '0.12';
+
+
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
 
@@ -179,6 +182,10 @@ __END__
 
 NetHack::Inventory - the player's inventory
 
+=head1 VERSION
+
+version 0.12
+
 =head1 SYNOPSIS
 
     use NetHack::ItemPool;
@@ -198,4 +205,3 @@ NetHack::Inventory - the player's inventory
 =head1 DESCRIPTION
 
 =cut
-

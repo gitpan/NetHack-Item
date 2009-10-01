@@ -1,4 +1,7 @@
 package NetHack::Item::Ring;
+our $VERSION = '0.12';
+
+
 use Moose;
 extends 'NetHack::Item';
 with 'NetHack::Item::Role::Enchantable';

@@ -1,18 +1,26 @@
-# Load the Module::Install bundled in ./inc/
-use inc::Module::Install;
 
-# Define metadata
-name     'NetHack-Item';
-all_from 'lib/NetHack/Item.pm';
-githubmeta;
+use strict;
+use warnings;
 
-requires 'NetHack::Monster::Spoiler'   => 0.02;
-requires 'Moose'                       => 0.90;
-requires 'MooseX::Role::Parameterized' => 0.05;
-requires 'Module::Pluggable'           => 3.8;
-requires 'Set::Object'                 => 1.00;
-requires 'Test::More'                  => 0.86;
-requires 'Test::Exception'             => 0.27;
+use ExtUtils::MakeMaker;
 
-WriteAll;
+WriteMakefile(
+  DISTNAME  => 'NetHack-Item',
+  NAME      => 'NetHack::Item',
+  AUTHOR    => 'Shawn\ M\ Moore\ \<sartak\@bestpractical\.com\>\,\ Jesse\ Luehrs\ \<doy\ at\ tozt\ dot\ net\>\,\ Sean\ Kelly\ \<cpan\@katron\.org\>\,\ Stefan\ O\'Rear\ \<stefanor\@cox\.net\>',
+  ABSTRACT  => 'parse\ and\ interact\ with\ a\ NetHack\ item',
+  VERSION   => '0.12',
+  EXE_FILES => [ qw() ],
+  (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
+  PREREQ_PM    => {
+    "NetHack::Monster::Spoiler" => '0.02',
+    "Module::Pluggable" => '3.8',
+    "Test::More" => '0.86',
+    "Test::Exception" => '0.2k',
+    "Set::Object" => '1.00',
+    "MooseX::Role::Parameterized" => '0.05',
+    "Moose" => '0.90',
+  },
+  test => {TESTS => 't/*.t'}
+);
 

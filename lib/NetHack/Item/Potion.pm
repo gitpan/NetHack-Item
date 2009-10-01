@@ -1,4 +1,7 @@
 package NetHack::Item::Potion;
+our $VERSION = '0.12';
+
+
 use Moose;
 extends 'NetHack::Item';
 with 'NetHack::Item::Role::Lightable';

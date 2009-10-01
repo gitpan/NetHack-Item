@@ -1,4 +1,7 @@
 package NetHack::Item::Role::Damageable;
+our $VERSION = '0.12';
+
+
 use Moose::Role;
 
 has [qw/burnt corroded rotted rusty/]=> (

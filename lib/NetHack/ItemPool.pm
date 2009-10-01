@@ -1,4 +1,7 @@
 package NetHack::ItemPool;
+our $VERSION = '0.12';
+
+
 use Moose;
 
 use NetHack::Item;
@@ -95,6 +98,10 @@ __END__
 
 NetHack::ItemPool - represents a universe of NetHack items
 
+=head1 VERSION
+
+version 0.12
+
 =head1 SYNOPSIS
 
     use NetHack::ItemPool;
@@ -115,4 +122,3 @@ More documentation to come. For now, the best resource is this module's test
 suite.
 
 =cut
-

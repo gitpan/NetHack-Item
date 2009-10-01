@@ -1,4 +1,7 @@
 package NetHack::Item::Tool::Weapon;
+our $VERSION = '0.12';
+
+
 use Moose;
 extends 'NetHack::Item::Tool';
 with 'NetHack::Item::Role::Enchantable';

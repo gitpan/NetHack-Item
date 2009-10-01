@@ -1,13 +1,10 @@
-.gitignore
 Changes
-inc/Module/Install.pm
-inc/Module/Install/Base.pm
-inc/Module/Install/Can.pm
-inc/Module/Install/Fetch.pm
-inc/Module/Install/Makefile.pm
-inc/Module/Install/Metadata.pm
-inc/Module/Install/Win32.pm
-inc/Module/Install/WriteAll.pm
+LICENSE
+MANIFEST
+META.yml
+Makefile.PL
+README
+dist.ini
 lib/NetHack/Inventory.pm
 lib/NetHack/Inventory/Equipment.pm
 lib/NetHack/Item.pm
@@ -29,11 +26,11 @@ lib/NetHack/Item/Meta/Types.pm
 lib/NetHack/Item/Other.pm
 lib/NetHack/Item/Potion.pm
 lib/NetHack/Item/Ring.pm
-lib/NetHack/Item/Role/Chargeable.pm
 lib/NetHack/Item/Role/ChargeBUC.pm
+lib/NetHack/Item/Role/Chargeable.pm
 lib/NetHack/Item/Role/Damageable.pm
-lib/NetHack/Item/Role/Enchantable.pm
 lib/NetHack/Item/Role/EnchantBUC.pm
+lib/NetHack/Item/Role/Enchantable.pm
 lib/NetHack/Item/Role/IncorporatesStats.pm
 lib/NetHack/Item/Role/Lightable.pm
 lib/NetHack/Item/Role/Wearable.pm
@@ -80,9 +77,6 @@ lib/NetHack/ItemPool/Tracker/Tool.pm
 lib/NetHack/ItemPool/Tracker/Wand.pm
 lib/NetHack/ItemPool/Tracker/Weapon.pm
 lib/NetHack/ItemPool/Trackers.pm
-Makefile.PL
-MANIFEST			This list of files
-META.yml
 t/000-load.t
 t/001-synopsis.t
 t/002-buc.t
@@ -138,3 +132,5 @@ t/702-ruleout-propagation.t
 t/703-more-wands.t
 t/lib/Test/NetHack/Item.pm
 t/lib/Test/NetHack/Items.pm
+t/release-pod-coverage.t
+t/release-pod-syntax.t

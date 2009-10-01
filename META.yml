@@ -1,30 +1,22 @@
 ---
 abstract: 'parse and interact with a NetHack item'
 author:
-  - 'Shawn M Moore, C<sartak@bestpractical.com>'
-build_requires:
-  ExtUtils::MakeMaker: 6.42
-configure_requires:
-  ExtUtils::MakeMaker: 6.42
-distribution_type: module
-generated_by: 'Module::Install version 0.91'
+  - 'Shawn M Moore <sartak@bestpractical.com>'
+  - 'Jesse Luehrs <doy at tozt dot net>'
+  - 'Sean Kelly <cpan@katron.org>'
+  - "Stefan O'Rear <stefanor@cox.net>"
+generated_by: 'Dist::Zilla version 1.092680'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: NetHack-Item
-no_index:
-  directory:
-    - inc
-    - t
 requires:
   Module::Pluggable: 3.8
-  Moose: 0.9
+  Moose: 0.90
   MooseX::Role::Parameterized: 0.05
   NetHack::Monster::Spoiler: 0.02
-  Set::Object: 1
-  Test::Exception: 0.27
+  Set::Object: 1.00
+  Test::Exception: 0.2k
   Test::More: 0.86
-resources:
-  license: http://dev.perl.org/licenses/
-version: 0.11
+version: 0.12

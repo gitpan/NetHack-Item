@@ -1,8 +1,9 @@
 package NetHack::Item::Meta::Trait::IncorporatesUndef;
-use Moose::Role;
+our $VERSION = '0.12';
 
-package Moose::Meta::Attribute::Custom::Trait::IncorporatesUndef;
-sub register_implementation { 'NetHack::Item::Meta::Trait::IncorporatesUndef' }
+
+use Moose::Role;
+Moose::Util::meta_attribute_alias 'IncorporatesUndef';
 
 1;
 

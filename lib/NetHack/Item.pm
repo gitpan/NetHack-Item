@@ -701,6 +701,10 @@ __END__
 
 NetHack::Item - parse and interact with a NetHack item
 
+=head1 VERSION
+
+version 0.12
+
 =head1 SYNOPSIS
 
     use NetHack::Item;
@@ -819,4 +823,3 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
-
