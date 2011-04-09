@@ -1,7 +1,7 @@
 package NetHack::Item::Armor::Boots;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Armor::Boots::VERSION = '0.13';
+}
 use Moose;
 extends 'NetHack::Item::Armor';
 

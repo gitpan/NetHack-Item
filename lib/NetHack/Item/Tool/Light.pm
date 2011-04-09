@@ -1,7 +1,7 @@
 package NetHack::Item::Tool::Light;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Tool::Light::VERSION = '0.13';
+}
 use Moose;
 extends 'NetHack::Item::Tool';
 with 'NetHack::Item::Role::Lightable';

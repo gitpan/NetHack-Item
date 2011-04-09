@@ -1,7 +1,7 @@
 package NetHack::Item::Tool::Accessory;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Tool::Accessory::VERSION = '0.13';
+}
 use Moose;
 extends 'NetHack::Item::Tool';
 with 'NetHack::Item::Role::Wearable';

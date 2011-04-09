@@ -1,7 +1,7 @@
 package NetHack::Item::Role::Wearable;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Role::Wearable::VERSION = '0.13';
+}
 use Moose::Role;
 
 has is_worn => (

@@ -1,7 +1,7 @@
 package NetHack::Item::Tool::Candelabrum;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Tool::Candelabrum::VERSION = '0.13';
+}
 use Moose;
 extends 'NetHack::Item::Tool::Light';
 

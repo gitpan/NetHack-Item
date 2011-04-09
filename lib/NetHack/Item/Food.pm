@@ -1,7 +1,7 @@
 package NetHack::Item::Food;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Food::VERSION = '0.13';
+}
 use Moose;
 extends 'NetHack::Item';
 

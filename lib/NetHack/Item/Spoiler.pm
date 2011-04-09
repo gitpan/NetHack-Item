@@ -1,7 +1,7 @@
 package NetHack::Item::Spoiler;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Spoiler::VERSION = '0.13';
+}
 use strict;
 use warnings;
 

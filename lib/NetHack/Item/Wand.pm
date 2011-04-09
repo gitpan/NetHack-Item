@@ -1,7 +1,7 @@
 package NetHack::Item::Wand;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Wand::VERSION = '0.13';
+}
 use Moose;
 extends 'NetHack::Item';
 with 'NetHack::Item::Role::ChargeBUC';

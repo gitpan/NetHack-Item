@@ -1,7 +1,7 @@
 package NetHack::Inventory;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Inventory::VERSION = '0.13';
+}
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
 
@@ -160,6 +160,11 @@ sub decrease_quantity {
     my $by   = shift || 1;
 
     my $item = $self->get($slot);
+    if (!$item) {
+        warn "Inventory->decrease_quantity called on an empty slot '$slot'";
+        return 0;
+    }
+
     my $orig_quantity = $item->quantity;
 
     if ($by >= $orig_quantity) {
@@ -184,7 +189,7 @@ NetHack::Inventory - the player's inventory
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 SYNOPSIS
 

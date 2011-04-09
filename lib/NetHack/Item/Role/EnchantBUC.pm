@@ -1,7 +1,7 @@
 package NetHack::Item::Role::EnchantBUC;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Role::EnchantBUC::VERSION = '0.13';
+}
 use Moose::Role;
 
 with 'NetHack::Item::Role::Enchantable';

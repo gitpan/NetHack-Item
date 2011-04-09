@@ -1,12 +1,14 @@
 package NetHack::Item;
+BEGIN {
+  $NetHack::Item::VERSION = '0.13';
+}
+use 5.008001;
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
 
 use NetHack::ItemPool;
 
 use NetHack::Item::Meta::Trait::IncorporatesUndef;
 use NetHack::Item::Meta::Types;
-
-our $VERSION = '0.11';
 
 with 'NetHack::ItemPool::Role::HasPool';
 
@@ -703,7 +705,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 SYNOPSIS
 
@@ -817,7 +819,7 @@ L<http://sartak.org/code/TAEB/>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 Shawn M Moore.
+Copyright 2009-2011 Shawn M Moore.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

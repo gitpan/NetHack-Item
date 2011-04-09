@@ -1,7 +1,7 @@
 package NetHack::Inventory::Equipment;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Inventory::Equipment::VERSION = '0.13';
+}
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
 
@@ -267,7 +267,7 @@ NetHack::Inventory::Equipment - the player's equipment
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 SYNOPSIS
 

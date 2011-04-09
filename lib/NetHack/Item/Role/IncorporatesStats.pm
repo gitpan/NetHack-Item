@@ -1,7 +1,7 @@
 package NetHack::Item::Role::IncorporatesStats;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Role::IncorporatesStats::VERSION = '0.13';
+}
 use MooseX::Role::Parameterized;
 
 parameter attribute => (

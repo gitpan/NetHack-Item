@@ -1,7 +1,7 @@
 package NetHack::ItemPool::Tracker::Ring;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::ItemPool::Tracker::Ring::VERSION = '0.13';
+}
 use Moose;
 extends 'NetHack::ItemPool::Tracker';
 

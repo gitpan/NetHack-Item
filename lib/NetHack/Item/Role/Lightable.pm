@@ -1,7 +1,7 @@
 package NetHack::Item::Role::Lightable;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Role::Lightable::VERSION = '0.13';
+}
 use Moose::Role;
 
 has is_lit => (

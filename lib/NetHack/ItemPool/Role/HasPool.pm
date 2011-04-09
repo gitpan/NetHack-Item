@@ -1,7 +1,7 @@
 package NetHack::ItemPool::Role::HasPool;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::ItemPool::Role::HasPool::VERSION = '0.13';
+}
 use Moose::Role;
 
 has pool => (

@@ -1,30 +1,24 @@
 package NetHack::Item::Role::Chargeable;
-our $VERSION = '0.12';
-
-
+BEGIN {
+  $NetHack::Item::Role::Chargeable::VERSION = '0.13';
+}
 use Moose::Role;
 
 has recharges => (
-    traits    => ['Counter'],
     is        => 'rw',
     isa       => 'Int',
     predicate => 'recharges_known',
     clearer   => '_clear_recharges',
-    handles   => {
-        inc_recharges => 'inc',
-    },
 );
+sub inc_recharges { $_[0]->recharges($_[0]->recharges + 1) }
 
 has charges => (
-    traits    => ['Number'],
     is        => 'rw',
     isa       => 'Int',
     predicate => 'charges_known',
     clearer   => 'set_charges_unknown',
-    handles   => {
-        subtract_charges => 'sub',
-    },
 );
+sub subtract_charges { $_[0]->charges($_[0]->charges - $_[1]) }
 
 has charges_spent_this_recharge => (
     traits    => ['Counter'],
