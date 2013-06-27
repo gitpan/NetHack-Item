@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Potion;
-BEGIN {
-  $NetHack::Item::Spoiler::Potion::VERSION = '0.13';
+{
+  $NetHack::Item::Spoiler::Potion::VERSION = '0.14';
 }
 use strict;
 use warnings;

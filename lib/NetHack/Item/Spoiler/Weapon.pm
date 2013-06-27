@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Weapon;
-BEGIN {
-  $NetHack::Item::Spoiler::Weapon::VERSION = '0.13';
+{
+  $NetHack::Item::Spoiler::Weapon::VERSION = '0.14';
 }
 use strict;
 use warnings;

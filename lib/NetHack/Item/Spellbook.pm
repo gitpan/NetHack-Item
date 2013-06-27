@@ -1,6 +1,6 @@
 package NetHack::Item::Spellbook;
-BEGIN {
-  $NetHack::Item::Spellbook::VERSION = '0.13';
+{
+  $NetHack::Item::Spellbook::VERSION = '0.14';
 }
 use Moose;
 extends 'NetHack::Item';

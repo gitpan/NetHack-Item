@@ -7,9 +7,9 @@ author:
   - "Stefan O'Rear <stefanor@cox.net>"
 build_requires: {}
 configure_requires:
-  ExtUtils::MakeMaker: 6.31
+  ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.200004, CPAN::Meta::Converter version 2.110360'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,4 +23,4 @@ requires:
   Set::Object: 1.00
   Test::Exception: 0.27
   Test::More: 0.86
-version: 0.13
+version: 0.14

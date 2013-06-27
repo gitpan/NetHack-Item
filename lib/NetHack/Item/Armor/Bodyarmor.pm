@@ -1,6 +1,6 @@
 package NetHack::Item::Armor::Bodyarmor;
-BEGIN {
-  $NetHack::Item::Armor::Bodyarmor::VERSION = '0.13';
+{
+  $NetHack::Item::Armor::Bodyarmor::VERSION = '0.14';
 }
 use Moose;
 extends 'NetHack::Item::Armor';

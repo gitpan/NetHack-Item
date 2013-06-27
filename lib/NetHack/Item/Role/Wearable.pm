@@ -1,6 +1,6 @@
 package NetHack::Item::Role::Wearable;
-BEGIN {
-  $NetHack::Item::Role::Wearable::VERSION = '0.13';
+{
+  $NetHack::Item::Role::Wearable::VERSION = '0.14';
 }
 use Moose::Role;
 

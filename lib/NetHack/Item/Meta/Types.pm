@@ -1,6 +1,6 @@
 package NetHack::Item::Meta::Types;
-BEGIN {
-  $NetHack::Item::Meta::Types::VERSION = '0.13';
+{
+  $NetHack::Item::Meta::Types::VERSION = '0.14';
 }
 
 =head1 NAME
@@ -9,7 +9,7 @@ NetHack::Item::Meta::Types - NetHack::Item-specific types
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =cut
 

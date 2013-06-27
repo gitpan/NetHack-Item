@@ -1,6 +1,6 @@
 package NetHack::Item::Other;
-BEGIN {
-  $NetHack::Item::Other::VERSION = '0.13';
+{
+  $NetHack::Item::Other::VERSION = '0.14';
 }
 use Moose;
 extends 'NetHack::Item';

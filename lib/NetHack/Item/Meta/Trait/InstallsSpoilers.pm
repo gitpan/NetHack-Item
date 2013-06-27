@@ -1,6 +1,6 @@
 package NetHack::Item::Meta::Trait::InstallsSpoilers;
-BEGIN {
-  $NetHack::Item::Meta::Trait::InstallsSpoilers::VERSION = '0.13';
+{
+  $NetHack::Item::Meta::Trait::InstallsSpoilers::VERSION = '0.14';
 }
 use Moose::Role;
 

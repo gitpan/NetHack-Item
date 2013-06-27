@@ -1,6 +1,6 @@
 package NetHack::Item::Tool::Figurine;
-BEGIN {
-  $NetHack::Item::Tool::Figurine::VERSION = '0.13';
+{
+  $NetHack::Item::Tool::Figurine::VERSION = '0.14';
 }
 use Moose;
 extends 'NetHack::Item::Tool';

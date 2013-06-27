@@ -1,6 +1,6 @@
 package NetHack::Item::Armor::Gloves;
-BEGIN {
-  $NetHack::Item::Armor::Gloves::VERSION = '0.13';
+{
+  $NetHack::Item::Armor::Gloves::VERSION = '0.14';
 }
 use Moose;
 extends 'NetHack::Item::Armor';
