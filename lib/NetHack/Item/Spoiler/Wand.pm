@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Wand;
 {
-  $NetHack::Item::Spoiler::Wand::VERSION = '0.14';
+  $NetHack::Item::Spoiler::Wand::VERSION = '0.15';
 }
 use strict;
 use warnings;

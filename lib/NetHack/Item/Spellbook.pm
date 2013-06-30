@@ -1,11 +1,16 @@
 package NetHack::Item::Spellbook;
 {
-  $NetHack::Item::Spellbook::VERSION = '0.14';
+  $NetHack::Item::Spellbook::VERSION = '0.15';
 }
 use Moose;
 extends 'NetHack::Item';
 
 use constant type => "spellbook";
+
+has difficult_for_level => (
+    is  => 'rw',
+    isa => 'Int',
+);
 
 sub spell {
     my $self = shift;
@@ -16,7 +21,7 @@ sub spell {
     return $1;
 }
 
-__PACKAGE__->meta->install_spoilers(qw/ink level time emergency role/);
+__PACKAGE__->meta->install_spoilers(qw/ink level time emergency role skill direction/);
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

@@ -116,6 +116,7 @@ t/400-incorporate.t
 t/401-incorporate-id-appearance.t
 t/402-evolution-ok.t
 t/403-incorporate-buc.t
+t/404-polymorph.t
 t/500-charging.t
 t/501-container.t
 t/502-container-weight.t

@@ -1,6 +1,6 @@
 package NetHack::Item;
 {
-  $NetHack::Item::VERSION = '0.14';
+  $NetHack::Item::VERSION = '0.15';
 }
 use 5.008001;
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
@@ -683,6 +683,19 @@ sub fits_in_slot {
     grep { $_ eq $slot } @{ $self->specific_slots };
 }
 
+sub did_polymorph { }
+
+sub did_polymorph_from {
+    my $self = shift;
+    my $older = shift;
+
+    $self->did_polymorph;
+
+    $self->is_blessed($older->is_blessed);
+    $self->is_uncursed($older->is_uncursed);
+    $self->is_cursed($older->is_cursed);
+}
+
 __PACKAGE__->meta->install_spoilers(qw/subtype stackable material weight price
                                        plural glyph/);
 
@@ -710,7 +723,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.14
+version 0.15
 
 =head1 SYNOPSIS
 

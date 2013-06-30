@@ -1,6 +1,6 @@
 package NetHack::Item::Armor::Cloak;
 {
-  $NetHack::Item::Armor::Cloak::VERSION = '0.14';
+  $NetHack::Item::Armor::Cloak::VERSION = '0.15';
 }
 use Moose;
 extends 'NetHack::Item::Armor';

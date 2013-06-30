@@ -1,6 +1,6 @@
 package NetHack::Item::Amulet;
 {
-  $NetHack::Item::Amulet::VERSION = '0.14';
+  $NetHack::Item::Amulet::VERSION = '0.15';
 }
 use Moose;
 extends 'NetHack::Item';

@@ -1,6 +1,6 @@
 package NetHack::ItemPool::Tracker::Other;
 {
-  $NetHack::ItemPool::Tracker::Other::VERSION = '0.14';
+  $NetHack::ItemPool::Tracker::Other::VERSION = '0.15';
 }
 use Moose;
 extends 'NetHack::ItemPool::Tracker';

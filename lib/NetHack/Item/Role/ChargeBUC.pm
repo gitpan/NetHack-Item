@@ -1,6 +1,6 @@
 package NetHack::Item::Role::ChargeBUC;
 {
-  $NetHack::Item::Role::ChargeBUC::VERSION = '0.14';
+  $NetHack::Item::Role::ChargeBUC::VERSION = '0.15';
 }
 use Moose::Role;
 
