@@ -133,5 +133,4 @@ t/702-ruleout-propagation.t
 t/703-more-wands.t
 t/lib/Test/NetHack/Item.pm
 t/lib/Test/NetHack/Items.pm
-t/release-pod-coverage.t
 t/release-pod-syntax.t

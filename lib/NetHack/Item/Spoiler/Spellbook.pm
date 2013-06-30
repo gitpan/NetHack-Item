@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Spellbook;
 {
-  $NetHack::Item::Spoiler::Spellbook::VERSION = '0.15';
+  $NetHack::Item::Spoiler::Spellbook::VERSION = '0.16';
 }
 use strict;
 use warnings;
@@ -373,7 +373,7 @@ sub _list {
             time      => 36,
             ink       => 60,
             emergency => 0,
-            skill     => 'escape'
+            skill     => 'escape',
             direction => 'beam',
         },
         'spellbook of knock' => {

@@ -1,6 +1,6 @@
 package NetHack::Item::Scroll;
 {
-  $NetHack::Item::Scroll::VERSION = '0.15';
+  $NetHack::Item::Scroll::VERSION = '0.16';
 }
 use Moose;
 extends 'NetHack::Item';

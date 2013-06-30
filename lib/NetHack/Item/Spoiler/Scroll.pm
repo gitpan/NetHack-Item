@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Scroll;
 {
-  $NetHack::Item::Spoiler::Scroll::VERSION = '0.15';
+  $NetHack::Item::Spoiler::Scroll::VERSION = '0.16';
 }
 use strict;
 use warnings;
