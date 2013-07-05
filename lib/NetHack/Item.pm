@@ -1,6 +1,6 @@
 package NetHack::Item;
 {
-  $NetHack::Item::VERSION = '0.17';
+  $NetHack::Item::VERSION = '0.18';
 }
 use 5.008001;
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
@@ -739,7 +739,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.17
+version 0.18
 
 =head1 SYNOPSIS
 

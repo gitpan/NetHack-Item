@@ -1,6 +1,6 @@
 package NetHack::Item::Ring;
 {
-  $NetHack::Item::Ring::VERSION = '0.17';
+  $NetHack::Item::Ring::VERSION = '0.18';
 }
 use Moose;
 extends 'NetHack::Item';

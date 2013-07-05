@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Ring;
 {
-  $NetHack::Item::Spoiler::Ring::VERSION = '0.17';
+  $NetHack::Item::Spoiler::Ring::VERSION = '0.18';
 }
 use strict;
 use warnings;

@@ -1,6 +1,6 @@
 package NetHack::Item::Food;
 {
-  $NetHack::Item::Food::VERSION = '0.17';
+  $NetHack::Item::Food::VERSION = '0.18';
 }
 use Moose;
 extends 'NetHack::Item';
@@ -29,6 +29,11 @@ with 'NetHack::Item::Role::IncorporatesStats' => {
     attribute => 'is_laid_by_you',
     stat      => 'laid',
 };
+
+sub nutrition_per_weight {
+    my $self = shift;
+    return $self->nutrition / $self->weight;
+}
 
 __PACKAGE__->meta->install_spoilers(qw/nutrition time vegan vegetarian/);
 

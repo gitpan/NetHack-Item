@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Gem;
 {
-  $NetHack::Item::Spoiler::Gem::VERSION = '0.17';
+  $NetHack::Item::Spoiler::Gem::VERSION = '0.18';
 }
 use strict;
 use warnings;

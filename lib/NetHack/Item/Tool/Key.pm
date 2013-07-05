@@ -1,6 +1,6 @@
 package NetHack::Item::Tool::Key;
 {
-  $NetHack::Item::Tool::Key::VERSION = '0.17';
+  $NetHack::Item::Tool::Key::VERSION = '0.18';
 }
 use Moose;
 extends 'NetHack::Item::Tool';

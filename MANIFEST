@@ -20,6 +20,7 @@ lib/NetHack/Item/Armor/Shirt.pm
 lib/NetHack/Item/Food.pm
 lib/NetHack/Item/Food/Corpse.pm
 lib/NetHack/Item/Gem.pm
+lib/NetHack/Item/Gold.pm
 lib/NetHack/Item/Meta/Trait/IncorporatesUndef.pm
 lib/NetHack/Item/Meta/Trait/InstallsSpoilers.pm
 lib/NetHack/Item/Meta/Types.pm
@@ -41,6 +42,7 @@ lib/NetHack/Item/Spoiler/Amulet.pm
 lib/NetHack/Item/Spoiler/Armor.pm
 lib/NetHack/Item/Spoiler/Food.pm
 lib/NetHack/Item/Spoiler/Gem.pm
+lib/NetHack/Item/Spoiler/Gold.pm
 lib/NetHack/Item/Spoiler/Other.pm
 lib/NetHack/Item/Spoiler/Potion.pm
 lib/NetHack/Item/Spoiler/Ring.pm
