@@ -1,6 +1,6 @@
 package NetHack::Item::Role::Lightable;
 {
-  $NetHack::Item::Role::Lightable::VERSION = '0.16';
+  $NetHack::Item::Role::Lightable::VERSION = '0.17';
 }
 use Moose::Role;
 

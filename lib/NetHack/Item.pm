@@ -1,6 +1,6 @@
 package NetHack::Item;
 {
-  $NetHack::Item::VERSION = '0.16';
+  $NetHack::Item::VERSION = '0.17';
 }
 use 5.008001;
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
@@ -543,6 +543,22 @@ sub is_evolution_of {
     return 1;
 }
 
+sub evolve_from {
+    my $self = shift;
+    my $new  = shift;
+    my $args = shift || {};
+
+    return 0 unless $new->is_evolution_of($self);
+
+    my $old_quantity = $self->quantity;
+    $self->incorporate_stats_from($new);
+    $self->slot($new->slot);
+    $self->quantity($old_quantity + $new->quantity)
+        if $args->{add} && $self->stackable;
+
+    return 1;
+}
+
 sub maybe_is {
     my $self = shift;
     my $other = shift;
@@ -723,7 +739,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.16
+version 0.17
 
 =head1 SYNOPSIS
 

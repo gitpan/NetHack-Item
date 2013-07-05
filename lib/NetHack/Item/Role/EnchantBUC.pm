@@ -1,6 +1,6 @@
 package NetHack::Item::Role::EnchantBUC;
 {
-  $NetHack::Item::Role::EnchantBUC::VERSION = '0.16';
+  $NetHack::Item::Role::EnchantBUC::VERSION = '0.17';
 }
 use Moose::Role;
 

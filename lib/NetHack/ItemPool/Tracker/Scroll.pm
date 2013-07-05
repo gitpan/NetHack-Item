@@ -1,6 +1,6 @@
 package NetHack::ItemPool::Tracker::Scroll;
 {
-  $NetHack::ItemPool::Tracker::Scroll::VERSION = '0.16';
+  $NetHack::ItemPool::Tracker::Scroll::VERSION = '0.17';
 }
 use Moose;
 extends 'NetHack::ItemPool::Tracker';

@@ -1,6 +1,6 @@
 package NetHack::Inventory;
 {
-  $NetHack::Inventory::VERSION = '0.16';
+  $NetHack::Inventory::VERSION = '0.17';
 }
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
@@ -88,13 +88,7 @@ sub update {
            && $item->identity eq 'gold piece';
 
     if (my $old = $self->get($slot)) {
-        if ($item->is_evolution_of($old)) {
-            my $old_quantity = $old->quantity;
-            $old->incorporate_stats_from($item);
-            $old->slot($slot);
-            $old->quantity($old_quantity + $item->quantity)
-                if $args->{add} && $old->stackable;
-
+        if ($old->evolve_from($item, $args)) {
             $self->equipment->update($old);
             $self->invalidate_weight;
         }
@@ -189,7 +183,7 @@ NetHack::Inventory - the player's inventory
 
 =head1 VERSION
 
-version 0.16
+version 0.17
 
 =head1 SYNOPSIS
 
