@@ -2,15 +2,14 @@ package Test::NetHack::Item;
 use strict;
 use warnings;
 use base 'Test::More';
-use Test::Exception ();
 
-our @EXPORT = qw/test_items plan_items incorporate_ok evolution_not_ok evolution_ok fits_ok fits_not_ok/;
-
+use Test::Fatal;
 use NetHack::Item;
+
+our @EXPORT = qw/test_items incorporate_ok evolution_not_ok evolution_ok fits_ok fits_not_ok/;
 
 sub import_extra {
     Test::More->export_to_level(2);
-    Test::Exception->export_to_level(2);
     strict->import;
     warnings->import;
 }
@@ -48,19 +47,6 @@ sub test_items {
     }
 }
 
-sub plan_items {
-    my @all_checks = @_;
-
-    my $tests = 0;
-    while (my ($item, $checks) = splice @_, 0, 2) {
-        $tests += ref($checks) eq 'HASH' ? keys %$checks : 1;
-    }
-
-    return $tests if defined wantarray;
-
-    Test::More::plan(tests => $tests);
-}
-
 sub incorporate_ok {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $before = shift;
@@ -85,9 +71,9 @@ sub evolution_not_ok {
 
     Test::More::ok(!$new->is_evolution_of($old), "$new_raw is not an evolution of $old_raw");
 
-    Test::Exception::throws_ok {
+    Test::More::like(exception {
         $old->incorporate_stats_from($new);
-    } qr/New item \(\Q$new_raw\E\) does not appear to be an evolution of the old item \(\Q$old_raw\E\)/;
+    }, qr/New item \(\Q$new_raw\E\) does not appear to be an evolution of the old item \(\Q$old_raw\E\)/);
 }
 
 sub evolution_ok {

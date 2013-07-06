@@ -1,6 +1,6 @@
 package NetHack::Item::Role::Damageable;
 {
-  $NetHack::Item::Role::Damageable::VERSION = '0.18';
+  $NetHack::Item::Role::Damageable::VERSION = '0.19';
 }
 use Moose::Role;
 

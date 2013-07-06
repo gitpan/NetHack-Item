@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Food;
 {
-  $NetHack::Item::Spoiler::Food::VERSION = '0.18';
+  $NetHack::Item::Spoiler::Food::VERSION = '0.19';
 }
 use strict;
 use warnings;

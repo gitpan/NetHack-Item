@@ -1,8 +1,6 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;
-use Test::More;
-use NetHack::Item;
+use lib 't/lib';
+use Test::NetHack::Item;
 
 my %base = (
     slot            => undef,
@@ -34,6 +32,7 @@ my %base = (
     offhand_wielded => 0,
     worn            => 0,
     cost            => 0,
+    is_custom_fruit => 0,
 );
 
 my %all_checks = (
@@ -296,12 +295,14 @@ my %all_checks = (
     },
 );
 
-plan tests => scalar keys %all_checks;
+my $pool = NetHack::ItemPool->new;
 
-for my $item (sort keys %all_checks) {
-    my $checks = { %base, %{ $all_checks{$item} } };
+for my $description (sort keys %all_checks) {
+    my $checks = { %base, %{ $all_checks{$description} } };
 
-    my $stats = NetHack::Item->extract_stats($item);
-    is_deeply($stats, $checks, "'$item'");
+    my $item = NetHack::Item->new(raw => $description, pool => $pool);
+    my $stats = $item->extract_stats($description);
+    is_deeply($stats, $checks, "'$description'");
 }
 
+done_testing;

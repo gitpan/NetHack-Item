@@ -25,11 +25,11 @@ my %WriteMakefileArgs = (
     "MooseX::Role::Parameterized" => "0.05",
     "NetHack::Monster::Spoiler" => "0.02",
     "Set::Object" => "1.00",
-    "Test::Exception" => "0.27",
-    "Test::More" => "0.86"
+    "Test::Fatal" => "0.007",
+    "Test::More" => "0.88"
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.18",
+  "VERSION" => "0.19",
   "test" => {
     "TESTS" => "t/*.t"
   }

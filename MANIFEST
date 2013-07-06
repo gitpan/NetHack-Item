@@ -48,9 +48,11 @@ lib/NetHack/Item/Spoiler/Potion.pm
 lib/NetHack/Item/Spoiler/Ring.pm
 lib/NetHack/Item/Spoiler/Scroll.pm
 lib/NetHack/Item/Spoiler/Spellbook.pm
+lib/NetHack/Item/Spoiler/Statue.pm
 lib/NetHack/Item/Spoiler/Tool.pm
 lib/NetHack/Item/Spoiler/Wand.pm
 lib/NetHack/Item/Spoiler/Weapon.pm
+lib/NetHack/Item/Statue.pm
 lib/NetHack/Item/Tool.pm
 lib/NetHack/Item/Tool/Accessory.pm
 lib/NetHack/Item/Tool/Candelabrum.pm
@@ -109,6 +111,7 @@ t/121-numeric-enchantment.t
 t/122-eggs.t
 t/123-fits-in-slot.t
 t/124-material.t
+t/125-monster.t
 t/200-spoilers.t
 t/201-artifacts.t
 t/202-naming-artifacts.t
@@ -128,11 +131,11 @@ t/601-artifact.t
 t/602-inventory.t
 t/603-equipment.t
 t/604-equipment-incorporate.t
-t/604-layering.t
+t/605-layering.t
+t/606-fruit.t
 t/700-tracker.t
 t/701-wand-engrave.t
 t/702-ruleout-propagation.t
 t/703-more-wands.t
 t/lib/Test/NetHack/Item.pm
-t/lib/Test/NetHack/Items.pm
 t/release-pod-syntax.t

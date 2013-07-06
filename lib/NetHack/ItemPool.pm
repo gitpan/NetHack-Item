@@ -1,6 +1,6 @@
 package NetHack::ItemPool;
 {
-  $NetHack::ItemPool::VERSION = '0.18';
+  $NetHack::ItemPool::VERSION = '0.19';
 }
 use Moose;
 
@@ -11,6 +11,18 @@ use NetHack::ItemPool::Trackers;
 use constant item_class      => 'NetHack::Item';
 use constant inventory_class => 'NetHack::Inventory';
 use constant trackers_class  => 'NetHack::ItemPool::Trackers';
+
+has fruit_name => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => 'slime mold',
+);
+
+has fruit_plural => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => 'slime molds',
+);
 
 has artifacts => (
     is      => 'ro',
@@ -100,7 +112,7 @@ NetHack::ItemPool - represents a universe of NetHack items
 
 =head1 VERSION
 
-version 0.18
+version 0.19
 
 =head1 SYNOPSIS
 

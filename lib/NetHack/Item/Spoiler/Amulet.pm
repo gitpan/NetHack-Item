@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Amulet;
 {
-  $NetHack::Item::Spoiler::Amulet::VERSION = '0.18';
+  $NetHack::Item::Spoiler::Amulet::VERSION = '0.19';
 }
 use strict;
 use warnings;

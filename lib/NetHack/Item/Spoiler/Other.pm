@@ -1,16 +1,15 @@
 package NetHack::Item::Spoiler::Other;
 {
-  $NetHack::Item::Spoiler::Other::VERSION = '0.18';
+  $NetHack::Item::Spoiler::Other::VERSION = '0.19';
 }
 use strict;
 use warnings;
 use base 'NetHack::Item::Spoiler';
-use NetHack::Monster::Spoiler;
 
 use constant type => 'other';
 
 sub _list {
-    my $others = {
+    return {
         'boulder' => {
             price     => 0,
             weight    => 6000,
@@ -60,27 +59,6 @@ sub _list {
             material   => 'liquid',
         },
     };
-
-    for my $monster (NetHack::Monster::Spoiler->list) {
-        my $name = "statue of ";
-        $name .= "the " if $monster->is_unique && !$monster->has_proper_name;
-        $name .= $monster->name =~ /^[aeiou]/i ? "an " : "a "
-            if !$monster->is_unique;
-        $name .= $monster->name;
-
-        $others->{$name} = {
-            price     => 0,
-            weight    => 900,
-            glyph     => '`',
-            sdam      => 'd20',
-            ldam      => 'd20',
-            nutrition => 2500,
-            material  => 'mineral',
-            monster   => $monster,
-        },
-    }
-
-    return $others;
 }
 
 1;

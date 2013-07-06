@@ -1,6 +1,6 @@
 package NetHack::Item::Potion;
 {
-  $NetHack::Item::Potion::VERSION = '0.18';
+  $NetHack::Item::Potion::VERSION = '0.19';
 }
 use Moose;
 extends 'NetHack::Item';

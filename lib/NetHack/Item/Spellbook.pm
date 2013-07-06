@@ -1,6 +1,6 @@
 package NetHack::Item::Spellbook;
 {
-  $NetHack::Item::Spellbook::VERSION = '0.18';
+  $NetHack::Item::Spellbook::VERSION = '0.19';
 }
 use Moose;
 extends 'NetHack::Item';
@@ -8,6 +8,11 @@ extends 'NetHack::Item';
 use constant type => "spellbook";
 
 has difficult_for_level => (
+    is  => 'rw',
+    isa => 'Int',
+);
+
+has difficult_for_int => (
     is  => 'rw',
     isa => 'Int',
 );

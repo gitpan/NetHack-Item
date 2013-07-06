@@ -1,6 +1,6 @@
 package NetHack::Inventory::Equipment;
 {
-  $NetHack::Inventory::Equipment::VERSION = '0.18';
+  $NetHack::Inventory::Equipment::VERSION = '0.19';
 }
 use Moose;
 with 'NetHack::ItemPool::Role::HasPool';
@@ -101,13 +101,19 @@ sub _update_armor {
 
     return unless $item->type eq 'armor';
 
-    if ($item->is_worn) {
-        my $slot = $item->subtype;
+    my $slot = $item->subtype;
 
+    if ($item->is_worn) {
         if ($item != ($self->$slot || 0)) {
             my $clearer = "clear_$slot";
             $self->$clearer;
             $self->$slot($item);
+        }
+    }
+    else {
+        if ($item == ($self->$slot || 0)) {
+            my $clearer = "clear_$slot";
+            $self->$clearer;
         }
     }
 }
@@ -267,7 +273,7 @@ NetHack::Inventory::Equipment - the player's equipment
 
 =head1 VERSION
 
-version 0.18
+version 0.19
 
 =head1 SYNOPSIS
 

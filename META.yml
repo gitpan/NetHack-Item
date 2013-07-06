@@ -21,6 +21,6 @@ requires:
   MooseX::Role::Parameterized: 0.05
   NetHack::Monster::Spoiler: 0.02
   Set::Object: 1.00
-  Test::Exception: 0.27
-  Test::More: 0.86
-version: 0.18
+  Test::Fatal: 0.007
+  Test::More: 0.88
+version: 0.19

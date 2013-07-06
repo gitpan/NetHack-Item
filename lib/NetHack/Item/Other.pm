@@ -1,6 +1,6 @@
 package NetHack::Item::Other;
 {
-  $NetHack::Item::Other::VERSION = '0.18';
+  $NetHack::Item::Other::VERSION = '0.19';
 }
 use Moose;
 extends 'NetHack::Item';
@@ -17,8 +17,6 @@ with 'NetHack::Item::Role::IncorporatesStats' => {
     attribute => 'is_chained_to_you',
     stat      => 'chained',
 };
-
-__PACKAGE__->meta->install_spoilers(qw/monster/);
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

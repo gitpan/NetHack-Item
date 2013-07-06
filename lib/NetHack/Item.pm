@@ -1,6 +1,6 @@
 package NetHack::Item;
 {
-  $NetHack::Item::VERSION = '0.18';
+  $NetHack::Item::VERSION = '0.19';
 }
 use 5.008001;
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
@@ -314,6 +314,15 @@ sub extract_stats {
 
     $stats{type} = $spoiler->name_to_type($stats{item});
 
+    if ($self->has_pool && ($stats{item} eq $self->pool->fruit_name || $stats{item} eq $self->pool->fruit_plural)) {
+        $stats{item} = $self->pool->fruit_name; # singularize
+        $stats{is_custom_fruit} = 1;
+        $stats{type} = 'food';
+    }
+    else {
+        $stats{is_custom_fruit} = 0;
+    }
+
     confess "Unknown item type for '$stats{item}' from $raw"
         if !$stats{type};
 
@@ -465,7 +474,11 @@ sub _set_appearance_and_identity {
     my $self       = shift;
     my $best_match = shift;
 
-    if (my $spoiler = $self->spoiler_class->spoiler_for($best_match)) {
+    if ($self->has_pool && $best_match eq $self->pool->fruit_name) {
+        $self->identity("slime mold");
+        $self->appearance($best_match);
+    }
+    elsif (my $spoiler = $self->spoiler_class->spoiler_for($best_match)) {
         if ($spoiler->{artifact}) {
             $self->artifact($spoiler->{name});
             $spoiler = $self->spoiler_class->spoiler_for($spoiler->{base})
@@ -739,7 +752,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.18
+version 0.19
 
 =head1 SYNOPSIS
 
