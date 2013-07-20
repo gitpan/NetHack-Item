@@ -1,6 +1,6 @@
 package NetHack::Item;
 {
-  $NetHack::Item::VERSION = '0.19';
+  $NetHack::Item::VERSION = '0.20';
 }
 use 5.008001;
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
@@ -15,6 +15,7 @@ with 'NetHack::ItemPool::Role::HasPool';
 has tracker => (
     is        => 'ro',
     writer    => '_set_tracker',
+    clearer   => '_clear_tracker',
     isa       => 'NetHack::ItemPool::Tracker',
     predicate => 'has_tracker',
 );
@@ -752,7 +753,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.19
+version 0.20
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 package NetHack::ItemPool;
 {
-  $NetHack::ItemPool::VERSION = '0.19';
+  $NetHack::ItemPool::VERSION = '0.20';
 }
 use Moose;
 
@@ -112,7 +112,7 @@ NetHack::ItemPool - represents a universe of NetHack items
 
 =head1 VERSION
 
-version 0.19
+version 0.20
 
 =head1 SYNOPSIS
 

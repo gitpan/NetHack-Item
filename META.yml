@@ -23,4 +23,4 @@ requires:
   Set::Object: 1.00
   Test::Fatal: 0.007
   Test::More: 0.88
-version: 0.19
+version: 0.20

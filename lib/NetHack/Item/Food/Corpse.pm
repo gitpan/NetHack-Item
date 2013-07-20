@@ -1,6 +1,6 @@
 package NetHack::Item::Food::Corpse;
 {
-  $NetHack::Item::Food::Corpse::VERSION = '0.19';
+  $NetHack::Item::Food::Corpse::VERSION = '0.20';
 }
 use Moose;
 extends 'NetHack::Item::Food';

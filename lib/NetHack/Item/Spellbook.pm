@@ -1,6 +1,6 @@
 package NetHack::Item::Spellbook;
 {
-  $NetHack::Item::Spellbook::VERSION = '0.19';
+  $NetHack::Item::Spellbook::VERSION = '0.20';
 }
 use Moose;
 extends 'NetHack::Item';
@@ -24,6 +24,15 @@ sub spell {
     return unless $self->identity =~ m{^spellbook of (.*)$};
     return if $1 eq "blank paper";
     return $1;
+}
+
+sub did_blank {
+    my $self = shift;
+
+    # convert to blank
+    $self->_clear_tracker;
+    $self->appearance("plain spellbook");
+    $self->identity("spellbook of blank paper");
 }
 
 __PACKAGE__->meta->install_spoilers(qw/ink level time emergency role skill direction/);
