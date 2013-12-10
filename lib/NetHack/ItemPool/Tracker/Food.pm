@@ -1,6 +1,6 @@
 package NetHack::ItemPool::Tracker::Food;
 {
-  $NetHack::ItemPool::Tracker::Food::VERSION = '0.20';
+  $NetHack::ItemPool::Tracker::Food::VERSION = '0.21';
 }
 use Moose;
 extends 'NetHack::ItemPool::Tracker';

@@ -1,9 +1,10 @@
 package NetHack::ItemPool::Tracker;
 {
-  $NetHack::ItemPool::Tracker::VERSION = '0.20';
+  $NetHack::ItemPool::Tracker::VERSION = '0.21';
 }
 use Moose;
 use Set::Object;
+use NetHack::Item::Spoiler;
 with 'NetHack::ItemPool::Role::HasPool';
 
 use Module::Pluggable (
@@ -35,19 +36,19 @@ has '+pool' => (
     handles  => [qw/trackers/],
 );
 
-has _possibilities => (
-    is       => 'ro',
+has possibilities => (
     isa      => 'Set::Object',
-    init_arg => 'possibilities',
     required => 1,
-    handles => {
+    handles  => {
+        _possibilities       => 'members',
         rule_out             => 'remove',
         includes_possibility => 'includes',
     },
 );
 
-has all_possibilities => (
+has _all_possibilities => (
     is       => 'ro',
+    init_arg => 'all_possibilities',
     isa      => 'Set::Object',
     required => 1,
 );
@@ -71,7 +72,7 @@ around BUILDARGS => sub {
 };
 
 sub possibilities {
-    my @possibilities = shift->_possibilities->members;
+    my @possibilities = shift->_possibilities;
     return @possibilities if !wantarray;
     return sort @possibilities;
 }
@@ -100,7 +101,7 @@ around rule_out => sub {
     my $self = shift;
 
     for my $possibility (@_) {
-        next if $self->all_possibilities->includes($possibility);
+        next if $self->_all_possibilities->includes($possibility);
         confess "$possibility is not included in " . $self->appearance . "'s set of all possibilities.";
     }
 
@@ -117,6 +118,24 @@ around rule_out => sub {
         confess "Ruled out all possibilities for " . $self->appearance . "!";
     }
 };
+
+sub priceid_useful {
+    my $self = shift;
+    my %seen_prices;
+
+    for my $possibility ($self->possibilities) {
+        my $spoiler = NetHack::Item::Spoiler->spoiler_for($possibility);
+        my $price = $spoiler->{price} || 0;
+
+        $seen_prices{ $price }++;
+
+        if (keys %seen_prices >= 2) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

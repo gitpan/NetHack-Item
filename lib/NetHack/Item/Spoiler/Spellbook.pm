@@ -1,6 +1,6 @@
 package NetHack::Item::Spoiler::Spellbook;
 {
-  $NetHack::Item::Spoiler::Spellbook::VERSION = '0.20';
+  $NetHack::Item::Spoiler::Spellbook::VERSION = '0.21';
 }
 use strict;
 use warnings;

@@ -1,6 +1,6 @@
 package NetHack::Item::Wand;
 {
-  $NetHack::Item::Wand::VERSION = '0.20';
+  $NetHack::Item::Wand::VERSION = '0.21';
 }
 use Moose;
 extends 'NetHack::Item';

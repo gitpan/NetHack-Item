@@ -1,6 +1,6 @@
 package NetHack::Item;
 {
-  $NetHack::Item::VERSION = '0.20';
+  $NetHack::Item::VERSION = '0.21';
 }
 use 5.008001;
 use Moose -traits => 'NetHack::Item::Meta::Trait::InstallsSpoilers';
@@ -653,7 +653,7 @@ before 'identity', 'has_identity' => sub {
     $self->identity($self->tracker->possibilities);
 };
 
-sub cost {
+sub total_cost {
     my $self = shift;
     confess "Set cost_each instead." if @_;
     return $self->cost_each * $self->quantity;
@@ -753,7 +753,7 @@ NetHack::Item - parse and interact with a NetHack item
 
 =head1 VERSION
 
-version 0.20
+version 0.21
 
 =head1 SYNOPSIS
 

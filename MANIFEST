@@ -140,5 +140,6 @@ t/703-more-wands.t
 t/704-dilute.t
 t/705-blank-scroll.t
 t/706-blank-spellbook.t
+t/710-priceid-useful.t
 t/lib/Test/NetHack/Item.pm
 t/release-pod-syntax.t

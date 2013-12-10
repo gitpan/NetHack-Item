@@ -1,6 +1,6 @@
 package NetHack::ItemPool::Tracker::Amulet;
 {
-  $NetHack::ItemPool::Tracker::Amulet::VERSION = '0.20';
+  $NetHack::ItemPool::Tracker::Amulet::VERSION = '0.21';
 }
 use Moose;
 extends 'NetHack::ItemPool::Tracker';

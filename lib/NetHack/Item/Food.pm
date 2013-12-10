@@ -1,6 +1,6 @@
 package NetHack::Item::Food;
 {
-  $NetHack::Item::Food::VERSION = '0.20';
+  $NetHack::Item::Food::VERSION = '0.21';
 }
 use Moose;
 extends 'NetHack::Item';
@@ -38,7 +38,7 @@ with 'NetHack::Item::Role::IncorporatesStats' => {
 
 sub nutrition_per_weight {
     my $self = shift;
-    return $self->nutrition / $self->weight;
+    return $self->nutrition_each / $self->weight;
 }
 
 after incorporate_stats => sub {
@@ -48,7 +48,16 @@ after incorporate_stats => sub {
     $self->is_custom_fruit($stats->{is_custom_fruit});
 };
 
-__PACKAGE__->meta->install_spoilers(qw/nutrition time vegan vegetarian/);
+sub nutrition_each {
+    return shift->collapse_spoiler_value("nutrition");
+}
+
+sub total_nutrition {
+    my $self = shift;
+    return $self->nutrition_each * $self->quantity;
+}
+
+__PACKAGE__->meta->install_spoilers(qw/time vegan vegetarian/);
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

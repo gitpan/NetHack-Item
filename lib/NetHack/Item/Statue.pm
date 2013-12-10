@@ -1,6 +1,6 @@
 package NetHack::Item::Statue;
 {
-  $NetHack::Item::Statue::VERSION = '0.20';
+  $NetHack::Item::Statue::VERSION = '0.21';
 }
 use Moose;
 extends 'NetHack::Item';

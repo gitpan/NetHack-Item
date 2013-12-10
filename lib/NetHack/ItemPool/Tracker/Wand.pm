@@ -1,6 +1,6 @@
 package NetHack::ItemPool::Tracker::Wand;
 {
-  $NetHack::ItemPool::Tracker::Wand::VERSION = '0.20';
+  $NetHack::ItemPool::Tracker::Wand::VERSION = '0.21';
 }
 use Moose;
 extends 'NetHack::ItemPool::Tracker';
